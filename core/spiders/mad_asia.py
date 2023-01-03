@@ -2,11 +2,11 @@
 import json
 
 # Core imports.
-import scrapy
+from scrapy import Spider
 from scrapy.http import Request, FormRequest
 
 
-class MadAsiaInsuranceSpider(scrapy.Spider):
+class MadAsiaInsuranceSpider(Spider):
     name = 'mad_asia_insurance'
     login_url = 'https://mccp.iraneit.com/core/connect/token'
     inquiry_url = (
