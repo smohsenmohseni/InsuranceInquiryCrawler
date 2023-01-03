@@ -23,11 +23,11 @@ class MadAsiaInsuranceSpider(Spider):
             'client_id': 'MCClaimProc-ResOwner',
             'client_secret': 'secret',
         }
-        yield FormRequest(self.login_url, formdata=_data, callback=self.parse)
+        yield FormRequest(self.login_url, formdata=_data, callback=self.inquiry_request, dont_filter=True)
 
-    def parse(self, response, **kwargs):
-        yield Request(self.inquiry_url, callback=self.parse2, cookies=json.loads(response.body))
+    def inquiry_request(self, response, **kwargs):
+        yield Request(self.inquiry_url, callback=self.parse, cookies=json.loads(response.body), dont_filter=True)
 
     @staticmethod
-    def parse2(response, **kwargs):
+    def parse(response, **kwargs):
         return json.loads(response.body)
