@@ -6,8 +6,8 @@ import scrapy
 from scrapy.http import Request, FormRequest
 
 
-class LoginSpider(scrapy.Spider):
-    name = 'login_to'
+class MadAsiaInsuranceSpider(scrapy.Spider):
+    name = 'mad_asia_insurance'
     login_url = 'https://mccp.iraneit.com/core/connect/token'
     inquiry_url = (
         "https://mccp.iraneit.com/odata/MCClaimProc/preAuthEnabledPolicy/"
