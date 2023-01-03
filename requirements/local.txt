@@ -1,0 +1,5 @@
+-r base.txt
+
+# Formatter
+isort==5.11.4
+black==22.12.0

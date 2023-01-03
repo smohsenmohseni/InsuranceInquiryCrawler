@@ -1,0 +1,6 @@
+# Core
+Scrapy==2.7.1
+scrapyrt==0.13.0
+
+# Shell
+ipython==8.7.0

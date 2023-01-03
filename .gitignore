@@ -1,0 +1,9 @@
+# Logs
+logs/
+*.json
+
+# Ediors
+venv/
+.idea/
+.vscode/
+__pycache__/
