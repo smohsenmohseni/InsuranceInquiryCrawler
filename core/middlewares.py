@@ -1,12 +1,9 @@
-# Define here the models for your spider middleware
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-
+# Core imports.
 from scrapy import signals
 
+# Third-party imports.
 # useful for handling different item types with a single interface
-from itemadapter import is_item, ItemAdapter
+from itemadapter import ItemAdapter, is_item
 
 
 class CoreSpiderMiddleware:
