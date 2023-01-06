@@ -2,11 +2,9 @@
 import json
 
 # Local imports.
-from app.generics import BaseSpiderGeneric
+from app.generics import GenericSpider
 
 
-class TaminInsuranceSpider(BaseSpiderGeneric):
-    start_urls = ['https://medical.tamin.ir/api/medical-support/v2.0/2051057540']
-
+class TaminInsuranceSpider(GenericSpider):
     def parse(self, response, **kwargs):
         return json.loads(response.body)

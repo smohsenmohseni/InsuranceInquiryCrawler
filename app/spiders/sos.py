@@ -5,13 +5,10 @@ import json
 from scrapy.http import JsonRequest
 
 # Local imports.
-from app.generics import BaseSpiderGeneric
+from app.generics import GenericSpider
 
 
-class SOSInsuranceSpider(BaseSpiderGeneric):
-    login_url = 'https://carewrapper.iranassistance.com/Auth/Authentication/LoginUser'
-    inquiry_url = 'https://carewrapper.iranassistance.com/api/CareCenter/GetContractList'
-
+class SOSInsuranceSpider(GenericSpider):
     def start_requests(self):
         data_ = {
             'serviceDate': '1401/10/16',

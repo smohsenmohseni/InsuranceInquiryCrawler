@@ -7,3 +7,6 @@ venv/
 .idea/
 .vscode/
 __pycache__/
+
+# Sandbox file
+sandbox.py

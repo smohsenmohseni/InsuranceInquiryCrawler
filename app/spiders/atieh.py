@@ -2,23 +2,19 @@
 import re
 
 # Core imports.
-from scrapy.http import Request, FormRequest
+from scrapy.http import FormRequest
 
 # Local imports.
-from app.generics import FormLoginSpider
+from app.generics import GenericFormLoginSpider
 
 
-class AtiehInsuranceSpider(FormLoginSpider):
-    login_url = 'https://rasatpa.ir/sso/login?service=https%3A%2F%2Frasatpa.ir%2Fhcp%2Flogin%2Fcas'
-    inquiry_url = 'https://rasatpa.ir/hcp/reception/inquiryInsuredPerson'
-    custom_settings = {
-        'REDIRECT_ENABLED': True,
-    }
+class AtiehInsuranceSpider(GenericFormLoginSpider):
+    custom_settings = {'REDIRECT_ENABLED': True}
 
     def login_request(self, response):
         return FormRequest.from_response(
             response,
-            formdata={'username': '44443148', 'password': 'moein999', 'execution': 'e1s1', '_eventId': 'submit'},
+            formdata=self.login_data,
             meta={'handle_httpstatus_list': [302]},
             callback=self.inquiry_request,
         )

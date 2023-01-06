@@ -1,2 +1,1 @@
-# Third-party imports.
-from .base import FormLoginSpider, BaseSpiderGeneric
+from .base import GenericSpider, GenericFormLoginSpider
