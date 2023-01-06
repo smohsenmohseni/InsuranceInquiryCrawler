@@ -5,7 +5,7 @@ import json
 from scrapy.http import Request, FormRequest
 
 # Local imports.
-from app.generics.base import BaseSpiderGeneric
+from app.generics import BaseSpiderGeneric
 
 
 class MadAsiaInsuranceSpider(BaseSpiderGeneric):

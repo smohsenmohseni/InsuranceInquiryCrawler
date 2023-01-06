@@ -5,19 +5,16 @@ import json
 from scrapy.http import Request, FormRequest, JsonRequest
 
 # Local imports.
-from app.generics.base import BaseSpiderGeneric
+from app.generics import FormLoginSpider
 
 
-class DanaInsuranceSpider(BaseSpiderGeneric):
+class DanaInsuranceSpider(FormLoginSpider):
     handle_httpstatus_list = [302]
     login_url = 'https://totalapp2.dana-insurance.ir/Sepad1/Security'
     inquiry_url = (
         'https://totalapp2.dana-insurance.ir/Sepad1/Fanavaran/'
         'GetDataBimenameBimeShodeFanByCodeMeliTarikh?tarikhHazine=1401/10/13&CodeMelli=0015376461'
     )
-
-    def start_requests(self):
-        yield Request(self.login_url, dont_filter=True, callback=self.login_request)
 
     def login_request(self, response):
         yield FormRequest.from_response(

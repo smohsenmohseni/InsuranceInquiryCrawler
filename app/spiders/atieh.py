@@ -5,18 +5,15 @@ import re
 from scrapy.http import Request, FormRequest
 
 # Local imports.
-from app.generics.base import BaseSpiderGeneric
+from app.generics import FormLoginSpider
 
 
-class AtiehInsuranceSpider(BaseSpiderGeneric):
+class AtiehInsuranceSpider(FormLoginSpider):
     login_url = 'https://rasatpa.ir/sso/login?service=https%3A%2F%2Frasatpa.ir%2Fhcp%2Flogin%2Fcas'
     inquiry_url = 'https://rasatpa.ir/hcp/reception/inquiryInsuredPerson'
     custom_settings = {
         'REDIRECT_ENABLED': True,
     }
-
-    def start_requests(self):
-        yield Request(self.login_url, dont_filter=True, callback=self.login_request)
 
     def login_request(self, response):
         return FormRequest.from_response(

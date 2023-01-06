@@ -2,7 +2,7 @@
 import json
 
 # Local imports.
-from app.generics.base import BaseSpiderGeneric
+from app.generics import BaseSpiderGeneric
 
 
 class TaminInsuranceSpider(BaseSpiderGeneric):

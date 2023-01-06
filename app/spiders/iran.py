@@ -5,10 +5,10 @@ from http.cookies import SimpleCookie
 from scrapy.http import Request, FormRequest
 
 # Local imports.
-from app.generics.base import BaseSpiderGeneric
+from app.generics import FormLoginSpider
 
 
-class IranInsuranceSpider(BaseSpiderGeneric):
+class IranInsuranceSpider(FormLoginSpider):
     login_url = (
         'https://darman.iraninsurance.ir/dms-cas/'
         'login?service=http%3A%2F%2Fdarman.iraninsurance.ir%2F%2Fj_spring_cas_security_check'
@@ -18,9 +18,6 @@ class IranInsuranceSpider(BaseSpiderGeneric):
         'REDIRECT_ENABLED': True,
     }
     login_cookie = dict()
-
-    def start_requests(self):
-        yield Request(self.login_url, dont_filter=True, callback=self.login_request)
 
     def login_request(self, response):
         return FormRequest.from_response(
