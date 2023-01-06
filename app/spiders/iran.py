@@ -2,12 +2,13 @@
 from http.cookies import SimpleCookie
 
 # Core imports.
-from scrapy import Spider
 from scrapy.http import Request, FormRequest
 
+# Local imports.
+from app.generics.base import BaseSpiderGeneric
 
-class IranInsuranceSpider(Spider):
-    name = 'iran_insurance'
+
+class IranInsuranceSpider(BaseSpiderGeneric):
     login_url = (
         'https://darman.iraninsurance.ir/dms-cas/'
         'login?service=http%3A%2F%2Fdarman.iraninsurance.ir%2F%2Fj_spring_cas_security_check'

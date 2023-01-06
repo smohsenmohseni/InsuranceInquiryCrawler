@@ -2,13 +2,14 @@
 import json
 
 # Core imports.
-from scrapy import Spider
 from scrapy.http import Request, FormRequest, JsonRequest
 
+# Local imports.
+from app.generics.base import BaseSpiderGeneric
 
-class DanaInsuranceSpider(Spider):
+
+class DanaInsuranceSpider(BaseSpiderGeneric):
     handle_httpstatus_list = [302]
-    name = 'dana_insurance'
     login_url = 'https://totalapp2.dana-insurance.ir/Sepad1/Security'
     inquiry_url = (
         'https://totalapp2.dana-insurance.ir/Sepad1/Fanavaran/'

@@ -2,12 +2,13 @@
 import json
 
 # Core imports.
-from scrapy import Spider
-from scrapy.http import Request, JsonRequest
+from scrapy.http import JsonRequest
+
+# Local imports.
+from app.generics.base import BaseSpiderGeneric
 
 
-class SOSInsuranceSpider(Spider):
-    name = 'sos_insurance'
+class SOSInsuranceSpider(BaseSpiderGeneric):
     login_url = 'https://carewrapper.iranassistance.com/Auth/Authentication/LoginUser'
     inquiry_url = 'https://carewrapper.iranassistance.com/api/CareCenter/GetContractList'
 

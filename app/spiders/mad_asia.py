@@ -2,12 +2,13 @@
 import json
 
 # Core imports.
-from scrapy import Spider
 from scrapy.http import Request, FormRequest
 
+# Local imports.
+from app.generics.base import BaseSpiderGeneric
 
-class MadAsiaInsuranceSpider(Spider):
-    name = 'mad_asia_insurance'
+
+class MadAsiaInsuranceSpider(BaseSpiderGeneric):
     login_url = 'https://mccp.iraneit.com/core/connect/token'
     inquiry_url = (
         "https://mccp.iraneit.com/odata/MCClaimProc/preAuthEnabledPolicy/"
