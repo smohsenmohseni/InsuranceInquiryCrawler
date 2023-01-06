@@ -1,5 +1,7 @@
+# Standard imports
 import re
 
+# Core imports.
 from scrapy import Spider
 from scrapy.http import Request, FormRequest
 
@@ -18,12 +20,7 @@ class AtiehInsuranceSpider(Spider):
     def login_request(self, response):
         return FormRequest.from_response(
             response,
-            formdata={
-                'username': '44443148',
-                'password': 'moein999',
-                'execution': 'e1s1',
-                '_eventId': 'submit'
-            },
+            formdata={'username': '44443148', 'password': 'moein999', 'execution': 'e1s1', '_eventId': 'submit'},
             meta={'handle_httpstatus_list': [302]},
             callback=self.inquiry_request,
         )
@@ -39,7 +36,9 @@ class AtiehInsuranceSpider(Spider):
                 'requestType': 'outpatient',
                 '_eventId': '',
             },
-            meta={'dont_redirect': False,},
+            meta={
+                'dont_redirect': False,
+            },
             # meta={'dont_redirect': False},
             callback=self.parse,
         )
