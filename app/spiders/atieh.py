@@ -33,7 +33,6 @@ class AtiehInsuranceSpider(GenericFormLoginSpider):
             meta={
                 'dont_redirect': False,
             },
-            # meta={'dont_redirect': False},
             callback=self.parse,
         )
 

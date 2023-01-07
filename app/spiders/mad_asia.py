@@ -14,7 +14,6 @@ class MadAsiaInsuranceSpider(GenericSpider):
             self.login_url,
             formdata=self.login_data,
             callback=self.inquiry_request,
-            dont_filter=True,
         )
 
     def inquiry_request(self, response, **kwargs):
@@ -22,7 +21,6 @@ class MadAsiaInsuranceSpider(GenericSpider):
             self.inquiry_url,
             callback=self.parse,
             cookies=json.loads(response.body),
-            dont_filter=True,
         )
 
     @staticmethod

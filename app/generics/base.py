@@ -27,7 +27,7 @@ class GenericSpider(Spider):
 
 class GenericFormLoginSpider(GenericSpider):
     def start_requests(self):
-        yield Request(self.login_url, dont_filter=True, callback=self.login_request)
+        yield Request(self.login_url, callback=self.login_request)
 
     def login_request(self, response):
         ...
