@@ -1,5 +1,5 @@
 # Standard imports
-import re
+from http.cookies import SimpleCookie
 
 # Core imports.
 from scrapy.http import FormRequest
@@ -15,24 +15,20 @@ class AtiehInsuranceSpider(GenericFormLoginSpider):
         return FormRequest.from_response(
             response,
             formdata=self.login_data,
-            meta={'handle_httpstatus_list': [302]},
             callback=self.inquiry_request,
         )
 
     def inquiry_request(self, response):
-        token = re.findall('TGC=[A-Za-z0-9._]*', response.headers.to_string().decode())[0].replace('TGC=', '')
+        c = SimpleCookie()
+        c.load(response.request.headers.get('Cookie').decode())
         return FormRequest(
             self.inquiry_url,
             method='POST',
-            cookies={'TGC': token},
+            cookies={'JSESSIONID': c['JSESSIONID'].value},
             formdata={
                 'nationalCode': self.national_code,
                 'requestType': 'outpatient',
-                '_eventId': '',
-            },
-            dont_filter=True,
-            meta={
-                'dont_redirect': False,
+                '_nonav': '',
             },
             callback=self.parse,
         )
