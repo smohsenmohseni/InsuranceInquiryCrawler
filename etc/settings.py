@@ -22,7 +22,6 @@ SPIDER_MIDDLEWARES_BASE = {
     'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware': 800,
     'scrapy.spidermiddlewares.depth.DepthMiddleware': 900,
 }
-SPIDER_MIDDLEWARES = {}
 
 # Twisted
 TWISTED_REACTOR = 'twisted.internet.asyncioreactor.AsyncioSelectorReactor'
