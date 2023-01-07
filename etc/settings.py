@@ -3,7 +3,7 @@ BOT_NAME = 'core'
 # Spider
 SPIDER_MODULES = ['app.spiders']
 NEWSPIDER_MODULE = 'app.spiders'
-# SPIDER_LOADER_CLASS = 'core.spiderloader.SpiderLoader'
+SPIDER_LOADER_CLASS = 'core.spiderloader.SpiderLoader'
 
 # Commands
 COMMANDS_MODULE = 'core.commands'
@@ -41,4 +41,4 @@ REDIRECT_ENABLED = False
 HTTPCACHE_ENABLED = True
 HTTPCACHE_EXPIRATION_SECS = 1000
 HTTPCACHE_IGNORE_HTTP_CODES = [500, 404]
-HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+HTTPCACHE_STORAGE = 'core.httpcache.storage.FilesystemCacheStorage'

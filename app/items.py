@@ -1,6 +1,5 @@
 # Core imports.
 import scrapy
-from scrapy.extensions import httpcache
 
 
 class CoreItem(scrapy.Item):

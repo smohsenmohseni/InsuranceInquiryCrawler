@@ -19,7 +19,5 @@ def disable_cache(func):
                 yield _append_disable_cache_meta(item)
         except TypeError:
             yield _append_disable_cache_meta(resp)
-        else:
-            return resp
 
     return wrapper
