@@ -18,7 +18,7 @@ class MadAsiaInsuranceSpider(GenericSpider):
 
     def inquiry_request(self, response, **kwargs):
         yield Request(
-            self.inquiry_url,
+            self.inquiry_url.format(national_code=self.national_code),
             callback=self.parse,
             cookies=json.loads(response.body),
         )

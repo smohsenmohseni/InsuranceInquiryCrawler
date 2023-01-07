@@ -9,8 +9,9 @@ from app.helpers.transformers import to_snake_case
 
 class GenericSpider(Spider):
     login_url: str
-    inquiry_url: str
     login_data: dict
+    inquiry_url: str
+    national_code: str
     custom_settings: dict
 
     def __init__(self, *args, **kwargs):

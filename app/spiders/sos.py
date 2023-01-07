@@ -13,7 +13,7 @@ class SOSInsuranceSpider(GenericSpider):
         data_ = {
             'serviceDate': '1401/10/16',
             'hospitalId': '153398',
-            'nationalcode': '2593158999',
+            'nationalcode': self.national_code,
         }
         yield JsonRequest(self.inquiry_url, data=data_, callback=self.parse)
 

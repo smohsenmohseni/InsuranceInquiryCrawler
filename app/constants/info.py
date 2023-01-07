@@ -13,7 +13,7 @@ DANA_INSURANCE_INFO = {
     'login_url': 'https://totalapp2.dana-insurance.ir/Sepad1/Security',
     'inquiry_url': (
         'https://totalapp2.dana-insurance.ir/Sepad1/Fanavaran/'
-        'GetDataBimenameBimeShodeFanByCodeMeliTarikh?tarikhHazine=1401/10/13&CodeMelli=0015376461'
+        'GetDataBimenameBimeShodeFanByCodeMeliTarikh?tarikhHazine=1401/10/13&CodeMelli={national_code}'
     ),
     'login_data': {
         'NameKarbari': 'mp1201451',
@@ -37,7 +37,7 @@ MAD_ASIA_INSURANCE_INFO = {
     'login_url': 'https://mccp.iraneit.com/core/connect/token',
     'inquiry_url': (
         "https://mccp.iraneit.com/odata/MCClaimProc/preAuthEnabledPolicy/"
-        "getInsuredPersonPolicyInfo(corpId=155,nationalCodeOrId='2051057540',type='nationalcode')?$top=1"
+        "getInsuredPersonPolicyInfo(corpId=155,nationalCodeOrId='{national_code}',type='nationalcode')?$top=1"
     ),
     'login_data': {
         'scope': 'openid profile user_info',
@@ -55,5 +55,5 @@ SOS_INSURANCE_INFO = {
 }
 
 TAMIN_INSURANCE_SPIDER_INFO = {
-    'start_urls': ['https://medical.tamin.ir/api/medical-support/v2.0/2051057540'],
+    'inquiry_url': 'https://medical.tamin.ir/api/medical-support/v2.0/{national_code}',
 }

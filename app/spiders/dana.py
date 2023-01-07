@@ -22,7 +22,9 @@ class DanaInsuranceSpider(GenericFormLoginSpider):
         unicode_dict = response.headers.to_unicode_dict()
         access_cookie = unicode_dict['set-cookie'].split(';', 1)[0].split('=')
         access_cookie = {access_cookie[0]: access_cookie[1]}
-        yield JsonRequest(self.inquiry_url, cookies=access_cookie, callback=self.parse)
+        yield JsonRequest(
+            self.inquiry_url.format(national_code=self.national_code), cookies=access_cookie, callback=self.parse
+        )
 
     def parse(self, response, **kwargs):
         return json.loads(response.body)

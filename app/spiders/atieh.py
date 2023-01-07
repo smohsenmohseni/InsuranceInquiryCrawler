@@ -26,7 +26,7 @@ class AtiehInsuranceSpider(GenericFormLoginSpider):
             method='POST',
             cookies={'TGC': token},
             formdata={
-                'nationalCode': '2590453711',
+                'nationalCode': self.national_code,
                 'requestType': 'outpatient',
                 '_eventId': '',
             },
