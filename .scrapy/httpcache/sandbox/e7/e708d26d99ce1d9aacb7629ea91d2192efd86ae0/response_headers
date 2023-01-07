@@ -1,0 +1,8 @@
+Content-Length: 0
+Date: Sat, 07 Jan 2023 09:30:48 GMT
+Server: WSGIServer/0.2 CPython/3.10.6
+Content-Type: text/html; charset=utf-8
+Location: /admin/
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Cross-Origin-Opener-Policy: same-origin

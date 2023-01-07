@@ -3,8 +3,8 @@ from scrapy import Spider
 from scrapy.http import Request
 
 # Local imports.
-from core.helpers import to_snake_case
 from app.constants import info
+from app.helpers.transformers import to_snake_case
 
 
 class GenericSpider(Spider):
