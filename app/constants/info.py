@@ -54,6 +54,6 @@ SOS_INSURANCE_INFO = {
     'inquiry_url': 'https://carewrapper.iranassistance.com/api/CareCenter/GetContractList',
 }
 
-TAMIN_INSURANCE_SPIDER_INFO = {
+TAMIN_INSURANCE_INFO = {
     'inquiry_url': 'https://medical.tamin.ir/api/medical-support/v2.0/{national_code}',
 }

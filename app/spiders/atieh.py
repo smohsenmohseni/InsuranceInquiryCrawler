@@ -30,6 +30,7 @@ class AtiehInsuranceSpider(GenericFormLoginSpider):
                 'requestType': 'outpatient',
                 '_eventId': '',
             },
+            dont_filter=True,
             meta={
                 'dont_redirect': False,
             },

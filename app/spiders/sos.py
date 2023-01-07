@@ -8,7 +8,7 @@ from scrapy.http import JsonRequest
 from app.generics import GenericSpider
 
 
-class SOSInsuranceSpider(GenericSpider):
+class SosInsuranceSpider(GenericSpider):
     def start_requests(self):
         data_ = {
             'serviceDate': '1401/10/16',
