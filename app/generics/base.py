@@ -1,6 +1,9 @@
+# Standard imports
+from typing import Any, Generator
+
 # Core imports.
 from scrapy import Spider
-from scrapy.http import Request
+from scrapy.http import Request, TextResponse
 
 # Local imports.
 from app.constants import info, messages
@@ -15,26 +18,29 @@ class GenericSpider(Spider):
     national_code: str
     custom_settings: dict
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         self.__dict__.update(getattr(info, f'{self.name()}_info'.upper(), {}))
         super().__init__(*args, **kwargs)
         self.validations()
 
-    def parse(self, response, **kwargs):
+    def parse(self, response: TextResponse, **kwargs: None) -> None:
         ...
 
-    def validations(self):
+    def validations(self) -> None:
+        """
+        :raises BadRequestException: if the national code is not sent, raise 400 request exception
+        """
         if not hasattr(self, 'national_code'):
             raise BadRequestException(messages.NATIONAL_CODE_IS_REQUIRED)
 
     @classmethod
-    def name(cls):
+    def name(cls) -> str:
         return to_snake_case(cls.__name__.replace('Spider', ''))
 
 
 class GenericFormLoginSpider(GenericSpider):
-    def start_requests(self):
+    def start_requests(self) -> Generator[Request, None, None]:
         yield Request(self.login_url, callback=self.login_request)
 
-    def login_request(self, response):
+    def login_request(self, response: TextResponse) -> None:
         ...

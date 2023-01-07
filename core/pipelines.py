@@ -1,7 +1,7 @@
-# Third-party imports.
-from itemadapter import ItemAdapter
+# Local imports.
+from app.generics import GenericSpider
 
 
 class CorePipeline:
-    def process_item(self, item, spider):
+    def process_item(self, item: dict, spider: GenericSpider) -> dict:
         return item

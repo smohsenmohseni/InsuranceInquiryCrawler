@@ -1,8 +1,9 @@
 # Standard imports
 import json
+from http.cookies import SimpleCookie
 
 # Core imports.
-from scrapy.http import FormRequest, JsonRequest
+from scrapy.http import FormRequest, JsonRequest, TextResponse
 
 # Local imports.
 from app.generics import GenericFormLoginSpider
@@ -11,20 +12,21 @@ from app.generics import GenericFormLoginSpider
 class DanaInsuranceSpider(GenericFormLoginSpider):
     handle_httpstatus_list = [302]
 
-    def login_request(self, response):
-        yield FormRequest.from_response(
+    def login_request(self, response: TextResponse) -> FormRequest:
+        return FormRequest.from_response(
             response,
             formdata=self.login_data,
             callback=self.inquiry_request,
         )
 
-    def inquiry_request(self, response, **kwargs):
-        unicode_dict = response.headers.to_unicode_dict()
-        access_cookie = unicode_dict['set-cookie'].split(';', 1)[0].split('=')
-        access_cookie = {access_cookie[0]: access_cookie[1]}
-        yield JsonRequest(
-            self.inquiry_url.format(national_code=self.national_code), cookies=access_cookie, callback=self.parse
+    def inquiry_request(self, response: TextResponse) -> JsonRequest:
+        c: SimpleCookie = SimpleCookie()
+        c.load(response.headers.get('set-cookie').decode())
+        return JsonRequest(
+            self.inquiry_url.format(national_code=self.national_code),
+            cookies={'.ASPXAUTH': c['.ASPXAUTH'].value},
+            callback=self.parse,
         )
 
-    def parse(self, response, **kwargs):
+    def parse(self, response: TextResponse, **kwargs: None) -> dict:
         return json.loads(response.body)
