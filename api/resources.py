@@ -2,6 +2,7 @@
 from scrapyrt.conf import app_settings
 from scrapyrt.resources import CrawlResource as BaseCrawlResource
 from twisted.web.server import Request as TwistedRequest
+from twisted.internet import defer
 
 
 class CrawlResource(BaseCrawlResource):
@@ -9,8 +10,14 @@ class CrawlResource(BaseCrawlResource):
     load_stats: bool = getattr(app_settings, 'LOAD_STATS', False)
     load_items_dropped: bool = getattr(app_settings, 'ITEMS_DROPPED', False)
 
-    def render_GET(self, request: TwistedRequest, **kwargs: None):
+    def render_GET(self, request: TwistedRequest, **kwargs: None) -> defer:
         request.args.update({b'start_requests': [b'true']})
+        national_code = request.args.get(b'national_code', [b''])[0].decode()
+        if national_code:
+            crawl_args_with_national_code: dict[bytes, list] = {
+                b'crawl_args': [bytes(f'{{"national_code": {national_code}}}'.encode())]
+            }
+            request.args.update(crawl_args_with_national_code)
         return super().render_GET(request, **kwargs)
 
     def prepare_response(self, result: dict, *args: None, **kwargs: dict[str, dict]) -> dict:
