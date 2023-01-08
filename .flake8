@@ -1,0 +1,20 @@
+[flake8]
+
+exclude =
+    .git,
+    .idea,
+    .vscode,
+    venv,
+    .venv,
+    env,
+    .env,
+    __pycache__,
+    */migrations/*.py,
+    setting,
+    __init__.py,
+    .gitignore,
+    */apps.py
+    *.pot,
+    *.py[co],
+
+ignore = E731, W503, E501
