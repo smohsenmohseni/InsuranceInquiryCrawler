@@ -14,4 +14,4 @@ class TaminInsuranceSpider(GenericSpider):
         yield Request(self.inquiry_url.format(national_code=self.national_code), callback=self.parse)
 
     def parse(self, response: TextResponse, **kwargs: None) -> dict:
-        return json.loads(response.body)
+        return json.loads(response.body).get('data')

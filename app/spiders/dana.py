@@ -33,4 +33,9 @@ class DanaInsuranceSpider(GenericSpider):
         )
 
     def parse(self, response: TextResponse, **kwargs: None) -> dict:
+        """
+        :success: return dict with status success
+        :fail: return dict with status fail
+        """
+        # TODO: use item and item loader to check insurance
         return json.loads(response.body)

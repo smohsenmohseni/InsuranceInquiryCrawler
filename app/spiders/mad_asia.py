@@ -20,10 +20,13 @@ class MadAsiaInsuranceSpider(GenericSpider):
     def inquiry_request(self, response: TextResponse) -> Request:
         return Request(
             self.inquiry_url.format(national_code=self.national_code),
-            callback=self.parse,
+            meta={'handle_httpstatus_list': [500]},
             cookies=json.loads(response.body),
+            callback=self.parse,
         )
 
     @staticmethod
     def parse(response: TextResponse, **kwargs: None) -> dict:
-        return json.loads(response.body)
+        if response.status == 200:
+            return json.loads(response.body)
+        return {'status': 'not valid'}

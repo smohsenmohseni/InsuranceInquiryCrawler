@@ -50,18 +50,21 @@ class IranInsuranceSpider(GenericSpider):
                 '_eventId': 'navigateHcpServicesToFlow',
             },
             clickdata={'id': 'inquiryOutpatientBtn'},
+            dont_filter=True,
             callback=self.parse,
         )
 
     def parse(self, response: TextResponse, **kwargs: None) -> dict:
-        values: list[str] = response.css('td.DemisT3 span *::text').getall()
-        return {
-            'first_name': values[0],
-            'last_name': values[1],
-            'father_name': values[2],
-            'gender': values[3],
-            'credit': values[6],
-            'birthdate': values[7],
-            'start_date': values[10],
-            'expire_date': values[11],
-        }
+        if not response.url.endswith('e1s1'):
+            values: list[str] = response.css('td.DemisT3 span *::text').getall()
+            return {
+                'first_name': values[0],
+                'last_name': values[1],
+                'father_name': values[2],
+                'gender': values[3],
+                'credit': values[6],
+                'birthdate': values[7],
+                'start_date': values[10],
+                'expire_date': values[11],
+            }
+        return {'status': 'not valid'}

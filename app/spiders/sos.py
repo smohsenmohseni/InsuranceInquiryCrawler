@@ -19,4 +19,7 @@ class SosInsuranceSpider(GenericSpider):
         yield JsonRequest(self.inquiry_url, data=data_, callback=self.parse)
 
     def parse(self, response: TextResponse, **kwargs: None) -> dict:
-        return json.loads(response.body.decode()).get('model')[0]
+        response_model: list = json.loads(response.body.decode()).get('model')
+        if response_model:
+            return response_model[0]
+        return {'status': 'not valid'}
