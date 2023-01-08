@@ -4,3 +4,6 @@ scrapyrt==0.13.0
 
 # Shell
 ipython==8.7.0
+
+# Parser
+json5==0.9.11
