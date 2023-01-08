@@ -1,5 +1,9 @@
 [flake8]
 
+indent-size = 4
+show-source = True
+max-line-length = 119
+
 exclude =
     .git,
     .idea,
@@ -9,12 +13,9 @@ exclude =
     env,
     .env,
     __pycache__,
-    */migrations/*.py,
-    setting,
-    __init__.py,
     .gitignore,
-    */apps.py
-    *.pot,
     *.py[co],
+    *.pyc,
 
-ignore = E731, W503, E501
+filename =
+    *.py

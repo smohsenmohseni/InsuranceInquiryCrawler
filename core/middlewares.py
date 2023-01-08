@@ -1,9 +1,6 @@
 # Core imports.
 from scrapy import signals
 
-# Third-party imports.
-from itemadapter import ItemAdapter, is_item
-
 
 class CoreSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
