@@ -1,15 +1,19 @@
 # Standard imports
+from typing import Generator
 from http.cookies import SimpleCookie
 
 # Core imports.
-from scrapy.http import FormRequest, TextResponse
+from scrapy.http import Request, FormRequest, TextResponse
 
 # Local imports.
-from app.generics import GenericFormLoginSpider
+from app.generics import GenericSpider
 
 
-class AtiehInsuranceSpider(GenericFormLoginSpider):
+class AtiehInsuranceSpider(GenericSpider):
     custom_settings = {'REDIRECT_ENABLED': True}
+
+    def start_requests(self) -> Generator[Request, None, None]:
+        yield Request(self.login_url, callback=self.login_request)
 
     def login_request(self, response: TextResponse) -> FormRequest:
         return FormRequest.from_response(

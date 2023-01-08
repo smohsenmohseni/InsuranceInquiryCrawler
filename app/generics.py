@@ -1,9 +1,9 @@
 # Standard imports
-from typing import Any, Generator
+from typing import Any
 
 # Core imports.
 from scrapy import Spider
-from scrapy.http import Request, TextResponse
+from scrapy.http import TextResponse
 
 # Local imports.
 from app.constants import info, messages
@@ -36,11 +36,3 @@ class GenericSpider(Spider):
     @classmethod
     def name(cls) -> str:
         return to_snake_case(cls.__name__.replace('Spider', ''))
-
-
-class GenericFormLoginSpider(GenericSpider):
-    def start_requests(self) -> Generator[Request, None, None]:
-        yield Request(self.login_url, callback=self.login_request)
-
-    def login_request(self, response: TextResponse) -> None:
-        ...
