@@ -7,3 +7,6 @@ ipython==8.7.0
 
 # Parser
 json5==0.9.11
+
+# Env
+python-dotenv==0.21.0
