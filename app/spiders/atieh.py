@@ -1,5 +1,4 @@
 # Standard imports
-import json
 from typing import Generator
 from http.cookies import SimpleCookie
 
