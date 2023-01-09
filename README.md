@@ -37,10 +37,10 @@ curl -X GET "http://localhost:9080/crawl.json?spider_name=sandbox&national_code=
 
 - Spider names format: `{InsuranceName}InsuranceSpider`
 
-- Name automatically set as: `{insurance_name}_insurance`
-
 - Spiders should inherit from: `app.generics.GenericSpider`
 
-- Spider should use start_requests function to start crawl
+- Spiders name automatically set as: `{insurance_name}_insurance`
+
+- Spiders should use start_requests function to start crawl
 
 - By default all spider use httpcache, to disable cache for request function use `app.helpers.decorators.disable_cache` decorator
