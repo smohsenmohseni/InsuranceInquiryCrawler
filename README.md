@@ -5,7 +5,7 @@
 [![Imports: isort](https://img.shields.io/badge/%20static%20analysis-flake8-%eb4034b1?style=flat)](https://github.com/PyCQA/flake8)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
-### How to setup project:
+### How to set up project:
 
 install dependencies:
 - Production:
@@ -17,9 +17,15 @@ install dependencies:
     pip install -r requirements/local.txt
     ```
 
+setup commands:
+
+```bash
+./scripts/setup
+```
+
 ### How to run project:
 ```bash
-sh ./scripts/start.sh
+start
 ```
 
 ### examples:
