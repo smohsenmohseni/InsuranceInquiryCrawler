@@ -1,0 +1,5 @@
+#!/bin/bash
+
+BIN_PATH="$(echo "$PATH" | cut -d ':' -f 1)"
+
+cp -rf ./scripts/* "$BIN_PATH"

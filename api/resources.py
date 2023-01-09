@@ -1,8 +1,8 @@
 # Third-party imports.
 from scrapyrt.conf import app_settings
+from twisted.internet import defer
 from scrapyrt.resources import CrawlResource as BaseCrawlResource
 from twisted.web.server import Request as TwistedRequest
-from twisted.internet import defer
 
 
 class CrawlResource(BaseCrawlResource):
