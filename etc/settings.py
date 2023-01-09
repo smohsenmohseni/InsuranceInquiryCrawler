@@ -1,3 +1,10 @@
+# Third-party imports.
+from dotenv import load_dotenv
+
+
+load_dotenv(dotenv_path='envs/.env.development')
+
+
 BOT_NAME = 'core'
 
 # Spider
@@ -37,7 +44,7 @@ RETRY_ENABLED = False
 REDIRECT_ENABLED = False
 
 # Cache
-HTTPCACHE_ENABLED = True
+# HTTPCACHE_ENABLED = True
 HTTPCACHE_EXPIRATION_SECS = 86400
 HTTPCACHE_IGNORE_HTTP_CODES = [500, 404]
 HTTPCACHE_STORAGE = 'core.httpcache.storage.FilesystemCacheStorage'

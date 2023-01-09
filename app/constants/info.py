@@ -1,12 +1,6 @@
 # Standard imports
 import os
 
-# Third-party imports.
-from dotenv import load_dotenv
-
-
-load_dotenv(dotenv_path='envs/.env.development')
-
 
 ATIEH_INSURANCE_INFO = {
     'login_url': 'https://rasatpa.ir/sso/login?service=https%3A%2F%2Frasatpa.ir%2Fhcp%2Flogin%2Fcas',
