@@ -13,3 +13,7 @@ sandbox.py
 
 # Storage
 .scrapy/
+
+# Env
+.env.development
+.env.production

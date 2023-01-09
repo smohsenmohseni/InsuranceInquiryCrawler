@@ -1,13 +1,24 @@
+# Standard imports
+import os
+
+# Third-party imports.
+from dotenv import load_dotenv
+
+
+load_dotenv(dotenv_path='envs/.env.development')
+
+
 ATIEH_INSURANCE_INFO = {
     'login_url': 'https://rasatpa.ir/sso/login?service=https%3A%2F%2Frasatpa.ir%2Fhcp%2Flogin%2Fcas',
     'inquiry_url': 'https://rasatpa.ir/hcp/reception/inquiryInsuredPerson',
     'login_data': {
-        'username': '44443148',
-        'password': 'moein999',
+        'username': os.getenv('ATIEH_USERNAME'),
+        'password': os.getenv('ATIEH_PASSWORD'),
         'execution': 'e1s1',
         '_eventId': 'submit',
     },
 }
+
 
 DANA_INSURANCE_INFO = {
     'login_url': 'https://totalapp2.dana-insurance.ir/Sepad1/Security',
@@ -16,8 +27,8 @@ DANA_INSURANCE_INFO = {
         'GetDataBimenameBimeShodeFanByCodeMeliTarikh?tarikhHazine=1401/10/13&CodeMelli={national_code}'
     ),
     'login_data': {
-        'NameKarbari': 'mp1201451',
-        'RamzeObor': 'moein999',
+        'NameKarbari': os.getenv('DANA_USERNAME'),
+        'RamzeObor': os.getenv('DANA_PASSWORD'),
     },
 }
 
@@ -28,8 +39,8 @@ IRAN_INSURANCE_INFO = {
     ),
     'inquiry_url': 'http://darman.iraninsurance.ir/home-flow?execution=e1s1',
     'login_data': {
-        'username': '444431488',
-        'password': 'moein999',
+        'username': os.getenv('IRAN_USERNAME'),
+        'password': os.getenv('IRAN_PASSWORD'),
     },
 }
 
@@ -42,8 +53,8 @@ MAD_ASIA_INSURANCE_INFO = {
     'login_data': {
         'scope': 'openid profile user_info',
         'grant_type': 'password',
-        'username': 'l.tehran11001',
-        'password': 'abc123',
+        'username': os.getenv('MAD_USERNAME'),
+        'password': os.getenv('MAD_PASSWORD'),
         'client_id': 'MCClaimProc-ResOwner',
         'client_secret': 'secret',
     },
