@@ -25,6 +25,7 @@ class GenericSpider(Spider):
     def __init__(self, *args: Any, **kwargs: Any):
         self.__dict__.update(getattr(info, f'{self.name()}_info'.upper(), {}))
         super().__init__(*args, **kwargs)
+        self.national_code = str(self.national_code)
         self.validations()
         setattr(self, 'parse', not_valid_message_if_none(self.parse))
 
