@@ -38,11 +38,15 @@ curl -X GET "http://localhost:9080/crawl.json?spider_name=sandbox&national_code=
 
 ## Contribute Notes:
 
-- Spiders names format: `{InsuranceName}InsuranceSpider`
+- Spiders name format: `{InsuranceName}InsuranceSpider`
 
 - Spiders should inherit from: `app.generics.GenericSpider`
 
 - Spiders name automatically set as: `{insurance_name}_insurance`
+
+- Items name format: `{InsuranceName}Item`
+
+- ItemLoaders name format: `{InsuranceName}ItemLoader`
 
 - Spiders should use start_requests function to start crawl
 
