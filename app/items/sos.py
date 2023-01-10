@@ -1,15 +1,14 @@
-# Standard imports
-from dataclasses import dataclass
+# Core imports.
+from scrapy import Item, Field
 
 
 __all__ = ('SosInsuranceItem',)
 
 
-@dataclass
-class SosInsuranceItem:
-    end_date: str = str()
-    last_name: str = str()
-    first_name: str = str()
-    start_date: str = str()
-    contract_name: str = str()
-    insurance_name: str = str()
+class SosInsuranceItem(Item):
+    end_date = Field()
+    last_name = Field()
+    first_name = Field()
+    start_date = Field()
+    contract_name = Field()
+    insurance_name = Field()

@@ -23,6 +23,7 @@ class SosInsuranceSpider(GenericSpider):
         yield JsonRequest(self.inquiry_url, data=data_, callback=self.parse)
 
     def parse(self, response: TextResponse, **kwargs: None) -> dict[str, str] | None:
+        print(response.body.decode())
         response_model: list[dict] = json.loads(response.body.decode()).get('model')
         if response_model:
             loader = SosInsuranceItemLoader()

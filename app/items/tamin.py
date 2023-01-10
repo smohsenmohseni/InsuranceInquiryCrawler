@@ -1,10 +1,9 @@
-# Standard imports
-from dataclasses import dataclass
+# Core imports.
+from scrapy import Item, Field
 
 
 __all__ = ('TaminInsuranceItem',)
 
 
-@dataclass
-class TaminInsuranceItem:
-    result: bool = bool()
+class TaminInsuranceItem(Item):
+    result = Field()
