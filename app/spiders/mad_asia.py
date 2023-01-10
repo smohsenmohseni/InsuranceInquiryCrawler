@@ -1,12 +1,13 @@
 # Standard imports
 import json
-from typing import Generator
+from typing import Any, Generator
 
 # Core imports.
 from scrapy.http import Request, FormRequest, TextResponse
 
 # Local imports.
 from app.generics import GenericSpider
+from app.loaders.mad import MadInsuranceItemLoader
 
 
 class MadAsiaInsuranceSpider(GenericSpider):
@@ -26,7 +27,16 @@ class MadAsiaInsuranceSpider(GenericSpider):
         )
 
     @staticmethod
-    def parse(response: TextResponse, **kwargs: None) -> dict:
+    def parse(response: TextResponse, **kwargs: None) -> dict[str, str] | None:
         if response.status == 200:
-            return json.loads(response.body)
-        return {'status': 'not valid'}
+            resp: dict[str, Any] = json.loads(response.body)
+            data: dict[str, str | int] = resp['PreAuthEnabledPolicies'][0]
+            loader = MadInsuranceItemLoader()
+            loader.add_value('support', resp['IsUnderCov'])
+            loader.add_value('end_date', data['CovEndDate'])
+            loader.add_value('start_date', data['CovBeginDate'])
+            loader.add_value('national_code', data['InsuredPersonNationalCode'])
+            loader.add_value('customer_name', data['CustomerName'])
+            loader.add_value('relationship', data['RelationTypeText'])
+            return loader.load_item()
+        return None
