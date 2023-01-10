@@ -8,6 +8,7 @@
 ## How to set up project:
 
 install dependencies:
+
 - Production:
     ```bash
     pip install -r requirements/production.txt
@@ -24,18 +25,20 @@ setup commands:
 ```
 
 ## How to run project:
+
 ```bash
 start
 ```
 
 ## Examples:
+
 ```bash
 curl -X GET "http://localhost:9080/crawl.json?spider_name=sandbox&national_code=12313123"
 ```
 
 ## Contribute Notes:
 
-- Spider names format: `{InsuranceName}InsuranceSpider`
+- Spiders names format: `{InsuranceName}InsuranceSpider`
 
 - Spiders should inherit from: `app.generics.GenericSpider`
 
@@ -43,4 +46,13 @@ curl -X GET "http://localhost:9080/crawl.json?spider_name=sandbox&national_code=
 
 - Spiders should use start_requests function to start crawl
 
-- By default all spider use httpcache, to disable cache for request function use `app.helpers.decorators.disable_cache` decorator
+- By default all spider use httpcache, to disable cache for request function use `app.helpers.decorators.disable_cache`
+  decorator
+
+- As here
+  said [css selector or xpath selector](https://exadel.com/news/how-to-choose-selectors-for-automation-to-make-your-life-a-whole-lot-easier/#:~:text=CSS%20selectors%20tend%20to%20perform,an%20element%20by%20its%20text.),
+  it is better to use `css selector` in most case except need to solve a complex issue
+
+- As documented
+  said [selectors shortcut](https://docs.scrapy.org/en/latest/topics/selectors.html#:~:text=By%20using%20response.selector%20or%20one%20of%20these%20shortcuts%20you%20can%20also%20ensure%20the%20response%20body%20is%20parsed%20only%20once.),
+  shortcuts selectors ensure the response body is parsed only once, so our prefers is to use shortcuts selectors
