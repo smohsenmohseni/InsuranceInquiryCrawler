@@ -1,3 +1,6 @@
+# Standard imports
+import json
+
 # Third-party imports.
 from scrapyrt.conf import app_settings
 from twisted.internet import defer
@@ -14,8 +17,9 @@ class CrawlResource(BaseCrawlResource):
         request.args.update({b'start_requests': [b'true']})
         national_code = request.args.get(b'national_code', [b''])[0].decode()
         if national_code:
+            national_code_args = str(json.dumps({"national_code": national_code}))
             crawl_args_with_national_code: dict[bytes, list] = {
-                b'crawl_args': [bytes(f'{{"national_code": {national_code}}}'.encode())]
+                b'crawl_args': [bytes(f'{national_code_args}'.encode())]
             }
             request.args.update(crawl_args_with_national_code)
         return super().render_GET(request, **kwargs)

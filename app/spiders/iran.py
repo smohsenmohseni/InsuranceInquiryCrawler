@@ -42,6 +42,7 @@ class IranInsuranceSpider(GenericSpider):
             return self.inquiry_request(response)
 
     def inquiry_request(self, response: TextResponse) -> FormRequest:
+        print(self.national_code)
         return FormRequest.from_response(
             response,
             cookies=self.login_cookie,
