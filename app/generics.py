@@ -8,7 +8,11 @@ from scrapy.http import TextResponse
 # Local imports.
 from app.constants import info, messages
 from core.exceptions import BadRequestException
+from app.helpers.decorator import not_valid_message_if_none
 from app.helpers.transformers import to_snake_case
+
+
+__all__ = ('GenericSpider',)
 
 
 class GenericSpider(Spider):
@@ -22,6 +26,7 @@ class GenericSpider(Spider):
         self.__dict__.update(getattr(info, f'{self.name()}_info'.upper(), {}))
         super().__init__(*args, **kwargs)
         self.validations()
+        setattr(self, 'parse', not_valid_message_if_none(self.parse))
 
     def parse(self, response: TextResponse, **kwargs: None) -> None:
         ...
