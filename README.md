@@ -50,6 +50,8 @@ curl -X GET "http://localhost:9080/crawl.json?spider_name=sandbox&national_code=
 
 - Spiders should use start_requests function to start crawl
 
+- If spider parse method return None by default `InvalidInsuranceItem` return instead of None
+
 - By default all spider use httpcache, to disable cache for request function use `app.helpers.decorators.disable_cache`
   decorator
 

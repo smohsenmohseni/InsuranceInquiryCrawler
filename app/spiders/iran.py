@@ -55,7 +55,7 @@ class IranInsuranceSpider(GenericSpider):
             callback=self.parse,
         )
 
-    def parse(self, response: TextResponse, **kwargs: None) -> dict | None:
+    def parse(self, response: TextResponse, **kwargs: None) -> dict[str, str] | None:
         loader = IranInsuranceItemLoader(selector=response.selector)
         loader.add_css('first_name', 'td tr:nth-child(1) .DemisT3:nth-child(2) .base-value-info *::text')
         loader.add_css('last_name', 'td tr:nth-child(1) .DemisT3:nth-child(4) .base-value-info *::text')
