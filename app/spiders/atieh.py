@@ -1,12 +1,10 @@
 # Standard imports
+import json
 from typing import Generator
 from http.cookies import SimpleCookie
 
 # Core imports.
 from scrapy.http import Request, FormRequest, TextResponse
-
-# Third-party imports.
-import json5
 
 # Local imports.
 from app.generics import GenericSpider
@@ -57,7 +55,20 @@ class AtiehInsuranceSpider(GenericSpider):
             loader.add_css('basic_insurance', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(13) p *::text')
             yield loader.load_item()
         elif response.url.endswith('inquiryInsuredPerson'):
-            data_list = response.css('main script[type="text/javascript"]').re(r'\[.*\]')
-            yield from json5.loads(data_list[0])
+            data_list: list[dict] = json.loads(response.css('main script[type="text/javascript"]').re(r'\[.*\]')[0])
+            for item in data_list:
+                loader = AtiehInsuranceItemLoader(selector=response.selector)
+                loader.add_value('insurer', item['policyHolder'])
+                loader.add_value('fullname', item['insuredName'])
+                loader.add_value('birthdate', item['birthDate'])
+                loader.add_value('father_name', item['fatherName'])
+                loader.add_value('relationship', item['relationName'])
+                loader.add_value('national_code', item['nationalCode'])
+                loader.add_value('customer_group', item['personGroupName'])
+                loader.add_value('end_date', item['startDate'])
+                loader.add_value('start_date', item['endDate'])
+                loader.add_value('insurance_name', item['insurerCompany'])
+                loader.add_value('basic_insurance', item['firstInsurerCompany'])
+                yield loader.load_item()
         else:
             return None
