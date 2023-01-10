@@ -44,9 +44,9 @@ curl -X GET "http://localhost:9080/crawl.json?spider_name=sandbox&national_code=
 
 - Spiders name automatically set as: `{insurance_name}_insurance`
 
-- Items name format: `{InsuranceName}Item`
+- Items name format: `{InsuranceName}InsuranceItem`
 
-- ItemLoaders name format: `{InsuranceName}ItemLoader`
+- ItemLoaders name format: `{InsuranceName}InsuranceItemLoader`
 
 - Spiders should use start_requests function to start crawl
 

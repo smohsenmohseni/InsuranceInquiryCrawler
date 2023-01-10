@@ -7,6 +7,7 @@ from scrapy.http import Request, FormRequest, TextResponse
 
 # Local imports.
 from app.generics import GenericSpider
+from app.loaders.iran import IranInsuranceItemLoader
 
 
 class IranInsuranceSpider(GenericSpider):
@@ -54,17 +55,14 @@ class IranInsuranceSpider(GenericSpider):
             callback=self.parse,
         )
 
-    def parse(self, response: TextResponse, **kwargs: None) -> dict:
-        if not response.url.endswith('e1s1'):
-            values: list[str] = response.css('td.DemisT3 span *::text').getall()
-            return {
-                'first_name': values[0],
-                'last_name': values[1],
-                'father_name': values[2],
-                'gender': values[3],
-                'credit': values[6],
-                'birthdate': values[7],
-                'start_date': values[10],
-                'expire_date': values[11],
-            }
-        return {'status': 'not valid'}
+    def parse(self, response: TextResponse, **kwargs: None) -> dict | None:
+        loader = IranInsuranceItemLoader(selector=response.selector)
+        loader.add_css('first_name', 'td tr:nth-child(1) .DemisT3:nth-child(2) .base-value-info *::text')
+        loader.add_css('last_name', 'td tr:nth-child(1) .DemisT3:nth-child(4) .base-value-info *::text')
+        loader.add_css('father_name', 'td tr:nth-child(1) .DemisT3:nth-child(6) .base-value-info *::text')
+        loader.add_css('gender', 'tr:nth-child(2) .DemisT3:nth-child(2) .base-value-info *::text')
+        loader.add_css('credit', 'tr:nth-child(3) .DemisT3:nth-child(2) .base-value-info *::text')
+        loader.add_css('birthdate', 'tr:nth-child(3) .DemisT3:nth-child(4) .base-value-info *::text')
+        loader.add_css('start_date', 'tr:nth-child(4) .DemisT3:nth-child(4) .base-value-info *::text')
+        loader.add_css('expire_date', 'tr:nth-child(4) .DemisT3:nth-child(6) .base-value-info *::text')
+        return result if (result := loader.load_item()) and all(result.__dict__.values()) else None

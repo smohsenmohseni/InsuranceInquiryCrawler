@@ -7,13 +7,13 @@ __all__ = ('DanaInsuranceItem',)
 
 @dataclass
 class DanaInsuranceItem:
-    gender: str = ''
-    fullname: str = ''
-    end_date: str = ''
-    last_name: str = ''
-    begin_date: str = ''
-    first_name: str = ''
-    birth_year: str = ''
-    father_name: str = ''
-    relationship: str = ''
-    national_code: str = ''
+    gender: str = str()
+    fullname: str = str()
+    end_date: str = str()
+    last_name: str = str()
+    begin_date: str = str()
+    first_name: str = str()
+    birth_year: str = str()
+    father_name: str = str()
+    relationship: str = str()
+    national_code: str = str()
