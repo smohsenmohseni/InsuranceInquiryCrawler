@@ -10,6 +10,7 @@ import json5
 
 # Local imports.
 from app.generics import GenericSpider
+from app.loaders.atieh import AtiehInsuranceItemLoader
 from app.helpers.decorator import disable_cache
 
 
@@ -42,22 +43,21 @@ class AtiehInsuranceSpider(GenericSpider):
             callback=self.parse,
         )
 
-    def parse(self, response: TextResponse, **kwargs: None) -> Generator[dict, None, None]:
-        rows = response.css(
-            '#policyInfoPanelBox-collapse div.col-lg-4.col-md-4.col-sm-6.col-xs-12 '
-            'p.text-secondary.pd-top-label-body.iransans'
-        )
-        values: list[str] = rows.css('*::text').getall()
-        if values:
-            yield {
-                'name': values[0],
-                'national_code': values[1],
-                'father_name': values[2],
-                'birthdate': values[4],
-                'insurance_name': values[6],
-                'basic_insurance_name': values[12],
-            }
-        elif data_list := response.css('main script[type="text/javascript"]').re(r'\[.*\]'):
+    def parse(self, response: TextResponse, **kwargs: None) -> Generator[dict, None, None] | None:
+        if response.url.endswith('outpatient'):
+            loader = AtiehInsuranceItemLoader(selector=response.selector)
+            loader.add_css('insurer', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(8) p *::text')
+            loader.add_css('fullname', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(1) p *::text')
+            loader.add_css('birthdate', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(5) p *::text')
+            loader.add_css('father_name', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(3) p *::text')
+            loader.add_css('relationship', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(4) p *::text')
+            loader.add_css('national_code', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(2) p *::text')
+            loader.add_css('customer_group', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(11) p *::text')
+            loader.add_css('insurance_name', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(7) p *::text')
+            loader.add_css('basic_insurance', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(13) p *::text')
+            yield loader.load_item()
+        elif response.url.endswith('inquiryInsuredPerson'):
+            data_list = response.css('main script[type="text/javascript"]').re(r'\[.*\]')
             yield from json5.loads(data_list[0])
         else:
-            yield {'status': 'not valid'}
+            return None
