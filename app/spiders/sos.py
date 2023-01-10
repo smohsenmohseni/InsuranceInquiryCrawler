@@ -5,21 +5,32 @@ from typing import Generator
 # Core imports.
 from scrapy.http import JsonRequest, TextResponse
 
+# Third-party imports.
+from jdatetime import datetime
+
 # Local imports.
 from app.generics import GenericSpider
+from app.loaders.sos import SosInsuranceItemLoader
 
 
 class SosInsuranceSpider(GenericSpider):
     def start_requests(self) -> Generator[JsonRequest, None, None]:
         data_: dict[str, str] = {
-            'serviceDate': '1401/10/16',
+            'serviceDate': datetime.now().strftime('%Y/%m/%d'),
             'hospitalId': '153398',
             'nationalcode': self.national_code,
         }
         yield JsonRequest(self.inquiry_url, data=data_, callback=self.parse)
 
-    def parse(self, response: TextResponse, **kwargs: None) -> dict:
-        response_model: list = json.loads(response.body.decode()).get('model')
+    def parse(self, response: TextResponse, **kwargs: None) -> dict | None:
+        response_model: list[dict] = json.loads(response.body.decode()).get('model')
         if response_model:
-            return response_model[0]
-        return {'status': 'not valid'}
+            loader = SosInsuranceItemLoader()
+            loader.add_value('end_date', response_model[0]['endDate'])
+            loader.add_value('last_name', response_model[0]['lastName'])
+            loader.add_value('first_name', response_model[0]['firstName'])
+            loader.add_value('start_date', response_model[0]['startDate'])
+            loader.add_value('contract_name', response_model[0]['contractName'])
+            loader.add_value('insurance_name', response_model[0]['insuranceName'])
+            return loader.load_item()
+        return None

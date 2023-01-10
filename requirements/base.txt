@@ -10,3 +10,6 @@ json5==0.9.11
 
 # Env
 python-dotenv==0.21.0
+
+# Datetime
+jdatetime==4.1.0
