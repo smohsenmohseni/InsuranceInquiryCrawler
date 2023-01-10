@@ -10,6 +10,7 @@ __pycache__/
 
 # Sandbox file
 sandbox.py
+sandboxes/
 
 # Storage
 .scrapy/
