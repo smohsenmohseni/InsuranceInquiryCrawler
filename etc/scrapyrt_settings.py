@@ -1,4 +1,4 @@
-CRAWL_MANAGER = 'scrapyrt.core.CrawlManager'
+CRAWL_MANAGER = 'api.manager.CrawlManager'
 
 RESOURCES = {
     'basic': 'api.resources.BasicInsuranceCrawlResource',

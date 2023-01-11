@@ -1,3 +1,6 @@
+# Core imports.
+from scrapy.utils.misc import load_object
+
 # Third-party imports.
 from scrapyrt.conf import app_settings
 from scrapyrt.utils import extract_scrapy_request_args
@@ -36,8 +39,50 @@ class BaseCrawlResource(DefaultCrawlResource):
 
 
 class BasicInsuranceCrawlResource(BaseCrawlResource):
-    pass
+    def run_crawl(
+        self,
+        spider_name,
+        scrapy_request_args,
+        max_requests=None,
+        crawl_args=None,
+        start_requests=False,
+        *args,
+        **kwargs,
+    ):
+        crawl_manager_cls = load_object(app_settings.CRAWL_MANAGER)
+        manager = crawl_manager_cls(
+            spider_name,
+            scrapy_request_args,
+            max_requests,
+            start_requests=start_requests,
+            spider_module_path='app.spiders.basic',
+        )
+        if crawl_args:
+            kwargs.update(crawl_args)
+        dfd = manager.crawl(*args, **kwargs)
+        return dfd
 
 
 class SupplementalInsuranceInsuranceCrawlResource(BaseCrawlResource):
-    pass
+    def run_crawl(
+        self,
+        spider_name,
+        scrapy_request_args,
+        max_requests=None,
+        crawl_args=None,
+        start_requests=False,
+        *args,
+        **kwargs,
+    ):
+        crawl_manager_cls = load_object(app_settings.CRAWL_MANAGER)
+        manager = crawl_manager_cls(
+            spider_name,
+            scrapy_request_args,
+            max_requests,
+            start_requests=start_requests,
+            spider_module_path='app.spiders.supplemental',
+        )
+        if crawl_args:
+            kwargs.update(crawl_args)
+        dfd = manager.crawl(*args, **kwargs)
+        return dfd
