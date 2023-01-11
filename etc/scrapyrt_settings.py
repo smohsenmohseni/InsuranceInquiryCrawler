@@ -1,8 +1,10 @@
 CRAWL_MANAGER = 'scrapyrt.core.CrawlManager'
 
 RESOURCES = {
-    'crawl.json': 'api.resources.CrawlResource',
+    'basic': 'api.resources.BasicInsuranceCrawlResource',
+    'supplemental': 'api.resources.SupplementalInsuranceInsuranceCrawlResource',
 }
 
+DEBUG = True
 LOAD_STATS = False
 ITEMS_DROPPED = False

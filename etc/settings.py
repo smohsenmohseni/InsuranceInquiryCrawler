@@ -8,7 +8,10 @@ load_dotenv(dotenv_path='envs/.env.development')
 BOT_NAME = 'core'
 
 # Spider
-SPIDER_MODULES = ['app.spiders']
+SPIDER_MODULES = [
+    'app.spiders.basic',
+    'app.spiders.supplemental',
+]
 NEWSPIDER_MODULE = 'app.spiders'
 SPIDER_LOADER_CLASS = 'core.spiderloader.SpiderLoader'
 

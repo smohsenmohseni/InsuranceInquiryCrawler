@@ -1,5 +1,6 @@
 [flake8]
 
+count = True
 indent-size = 4
 show-source = True
 max-line-length = 119
