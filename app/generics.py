@@ -23,7 +23,7 @@ class GenericSpider(Spider):
     custom_settings: dict
 
     def __init__(self, *args: Any, **kwargs: Any):
-        self.__dict__.update(getattr(info, f'{self.name()}_info'.upper(), {}))
+        self.__dict__.update(getattr(info, self.info_name(), {}))
         super().__init__(*args, **kwargs)
         self.national_code = str(self.national_code)
         self.validations()
@@ -38,6 +38,9 @@ class GenericSpider(Spider):
         """
         if not hasattr(self, 'national_code'):
             raise BadRequestException(messages.NATIONAL_CODE_IS_REQUIRED)
+
+    def info_name(self) -> str:
+        return f'{self.name()}_info'.upper()
 
     @classmethod
     def name(cls) -> str:

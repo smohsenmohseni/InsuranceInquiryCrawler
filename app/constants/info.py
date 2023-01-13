@@ -38,11 +38,11 @@ IRAN_INSURANCE_INFO = {
     },
 }
 
-MAD_ASIA_INSURANCE_INFO = {
+MAD_INSURANCE_INFO = {
     'login_url': 'https://mccp.iraneit.com/core/connect/token',
     'inquiry_url': (
-        "https://mccp.iraneit.com/odata/MCClaimProc/preAuthEnabledPolicy/"
-        "getInsuredPersonPolicyInfo(corpId=155,nationalCodeOrId='{national_code}',type='nationalcode')?$top=1"
+        "https://mccp.iraneit.com/odata/MCClaimProc/preAuthEnabledPolicy/getInsuredPersonPolicyInfo"
+        "(corpId={insurance_id},nationalCodeOrId='{national_code}',type='nationalcode')?$top=1"
     ),
     'login_data': {
         'scope': 'openid profile user_info',
