@@ -11,6 +11,8 @@ from app.loaders.mad import MadInsuranceItemLoader
 
 
 class BaseMadSpider(GenericSpider):
+    insurance_id: int
+
     def info_name(self) -> str:
         return 'MAD_INSURANCE_INFO'
 
@@ -23,7 +25,7 @@ class BaseMadSpider(GenericSpider):
 
     def inquiry_request(self, response: TextResponse) -> Request:
         return Request(
-            self.inquiry_url,
+            self.inquiry_url.format(insurance_id=self.insurance_id, national_code=self.national_code),
             meta={'handle_httpstatus_list': [500]},
             cookies=json.loads(response.body),
             callback=self.parse,
@@ -46,90 +48,60 @@ class BaseMadSpider(GenericSpider):
 
 
 class MadAsiaInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=155, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 155
 
 
 class MadMaInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=150, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 150
 
 
 class MadRaziInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=151, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 151
 
 
 class MadAtiehInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=158, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 158
 
 
 class MadTaavonInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=159, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 159
 
 
 class MadNovinInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=178, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 178
 
 
 class MadMihanInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=155, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 155
 
 
 class MadArmanInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=273, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 273
 
 
 class MadParsianInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=543, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 543
 
 
 class MadAlborzInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=2063, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 2063
 
 
 class MadSarmadInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=2498, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 2498
 
 
 class MadSinaInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=3025, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 3025
 
 
 class MadTejaratNoInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=3539, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 3539
 
 
 class MadMoalemInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=5650, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 5650
 
 
 class MadKosarInsuranceSpider(BaseMadSpider):
-    def inquiry_request(self, response: TextResponse) -> Request:
-        self.inquiry_url: str = self.inquiry_url.format(insurance_id=19023, national_code=self.national_code)
-        return super().inquiry_request(response)
+    insurance_id = 19023
