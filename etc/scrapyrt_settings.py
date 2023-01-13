@@ -7,4 +7,3 @@ RESOURCES = {
 
 DEBUG = True
 LOAD_STATS = False
-ITEMS_DROPPED = False
