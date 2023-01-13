@@ -8,6 +8,10 @@ from twisted.internet import defer
 from scrapyrt.resources import CrawlResource as DefaultCrawlResource
 from twisted.web.server import Request as TwistedRequest
 
+# Local imports.
+from core.constants import messages
+from core.exceptions import NotFoundException, BadRequestException
+
 
 class BaseCrawlResource(DefaultCrawlResource):
     allowedMethods: list[str] = ['GET']
@@ -22,16 +26,33 @@ class BaseCrawlResource(DefaultCrawlResource):
         return result.get("errors") or {
             "status": "ok",
             "spider_name": result.get("spider_name"),
-            "items": result.get("items"),
+            "items": self.validate_items(result.get("items", [])),
             "stats": result.get("stats") if self.load_stats else dict(),
         }
 
-    @staticmethod
-    def get_api_params(request: TwistedRequest) -> dict:
+    def get_api_params(self, request: TwistedRequest) -> dict:
         api_params = dict((name.decode('utf-8'), value[0].decode('utf-8')) for name, value in request.args.items())
-        national_code = request.args.get(b'national_code', [b''])[0].decode()
+        national_code = self.validate_national_code(request.args.get(b'national_code', [b''])[0].decode())
         api_params.update({'start_requests': True, 'crawl_args': {'national_code': national_code}})
         return api_params
+
+    @staticmethod
+    def validate_items(items: list) -> list:
+        """
+        :raises NotFoundException: if spider response is None that means no contract found
+        """
+        if not items:
+            raise NotFoundException(messages.NO_CONTRACT_WAS_FOUND_FOR_THIS_INSURANCE)
+        return items
+
+    @staticmethod
+    def validate_national_code(national_code: str) -> str:
+        """
+        :raises BadRequestException: if the national code is not sent, raise 400 request exception
+        """
+        if not national_code:
+            raise BadRequestException(messages.NATIONAL_CODE_IS_REQUIRED)
+        return national_code
 
 
 class BasicInsuranceCrawlResource(BaseCrawlResource):
