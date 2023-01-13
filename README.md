@@ -33,7 +33,11 @@ start
 ## Examples:
 
 ```bash
-curl -X GET "http://localhost:9080/crawl.json?spider_name=sandbox&national_code=12313123"
+curl -X GET "http://localhost:9080/basic?spider_name=sandbox&national_code=12313123"
+```
+
+```bash
+curl -X GET "http://localhost:9080/supplemental?spider_name=sandbox&national_code=12313123"
 ```
 
 ## Contribute Notes:
