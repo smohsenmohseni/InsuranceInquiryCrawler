@@ -20,6 +20,10 @@ class GenericSpider(Spider):
     national_code: str
     custom_settings: dict
 
+    @classmethod
+    def name(cls) -> str:
+        return to_snake_case(cls.__name__.replace('Spider', ''))
+
     def __init__(self, *args: Any, **kwargs: Any):
         self.__dict__.update(getattr(info, self.info_name(), {}))
         super().__init__(*args, **kwargs)
@@ -29,7 +33,3 @@ class GenericSpider(Spider):
 
     def info_name(self) -> str:
         return f'{self.name()}_info'.upper()
-
-    @classmethod
-    def name(cls) -> str:
-        return to_snake_case(cls.__name__.replace('Spider', ''))

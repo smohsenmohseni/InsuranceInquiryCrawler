@@ -1,9 +1,9 @@
 # Core imports.
-from scrapy.spiderloader import SpiderLoader as BaseSpiderLoader
+from scrapy.spiderloader import SpiderLoader as DefaultSpiderLoader
 from scrapy.utils.spider import iter_spider_classes
 
 
-class SpiderLoader(BaseSpiderLoader):
+class SpiderLoader(DefaultSpiderLoader):
     def _load_spiders(self, module) -> None:
         for spcls in iter_spider_classes(module):
             sp_name: str = spcls.name()
