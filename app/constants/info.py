@@ -5,6 +5,7 @@ import os
 ATIEH_INSURANCE_INFO = {
     'login_url': 'https://rasatpa.ir/sso/login?service=https%3A%2F%2Frasatpa.ir%2Fhcp%2Flogin%2Fcas',
     'inquiry_url': 'https://rasatpa.ir/hcp/reception/inquiryInsuredPerson',
+    'inquiry_from_several_policy_url': 'https://rasatpa.ir/hcp/reception/choosePolicy',
     'login_data': {
         'username': str(os.getenv('ATIEH_USERNAME', '')),
         'password': str(os.getenv('ATIEH_PASSWORD', '')),

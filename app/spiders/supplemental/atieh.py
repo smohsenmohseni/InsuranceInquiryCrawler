@@ -13,6 +13,7 @@ from app.helpers.decorator import disable_cache
 
 
 class AtiehInsuranceSpider(GenericSpider):
+    inquiry_from_several_policy_url: str
     custom_settings = {'REDIRECT_ENABLED': True}
 
     def start_requests(self) -> Generator[Request, None, None]:
@@ -25,23 +26,44 @@ class AtiehInsuranceSpider(GenericSpider):
             callback=self.inquiry_request,
         )
 
+    @staticmethod
+    def retrieve_authentication_cookie(cookie: str) -> dict:
+        c: SimpleCookie = SimpleCookie()
+        c.load(cookie)
+        return {'JSESSIONID': c['JSESSIONID'].value}
+
     @disable_cache
     def inquiry_request(self, response: TextResponse) -> FormRequest:
-        c: SimpleCookie = SimpleCookie()
-        c.load(response.request.headers.get('Cookie').decode())
         yield FormRequest(
-            self.inquiry_url,
             method='POST',
-            cookies={'JSESSIONID': c['JSESSIONID'].value},
+            callback=self.parse,
+            url=self.inquiry_url,
+            cookies=self.retrieve_authentication_cookie(response.request.headers.get('Cookie').decode()),
             formdata={
                 'nationalCode': self.national_code,
                 'requestType': 'outpatient',
                 '_nonav': '',
             },
-            callback=self.parse,
         )
 
-    def parse(self, response: TextResponse, **kwargs: None) -> Generator[dict, None, None] | None:
+    def inquiry_requests_from_several_policy(self, response: TextResponse, data_list: list) -> list:
+        return [
+            FormRequest(
+                method='POST',
+                callback=self.parse,
+                url=self.inquiry_from_several_policy_url,
+                cookies=self.retrieve_authentication_cookie(response.request.headers.get('Cookie').decode()),
+                dont_filter=True,
+                formdata={
+                    'requestType': 'outpatient',
+                    'policyType': str(policy.get('policyType')),
+                    'policyId': str(policy.get('policyId')),
+                },
+            )
+            for policy in data_list
+        ]
+
+    def parse(self, response: TextResponse, **kwargs: None) -> Generator[dict | Generator, None, None] | None:
         if response.url.endswith('outpatient'):
             loader = AtiehInsuranceItemLoader(selector=response.selector)
             loader.add_css('insurer', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(8) p *::text')
@@ -56,19 +78,6 @@ class AtiehInsuranceSpider(GenericSpider):
             yield loader.load_item()
         elif response.url.endswith('inquiryInsuredPerson'):
             data_list: list[dict] = json.loads(response.css('main script[type="text/javascript"]').re(r'\[.*\]')[0])
-            for item in data_list:
-                loader = AtiehInsuranceItemLoader(selector=response.selector)
-                loader.add_value('insurer', item['policyHolder'])
-                loader.add_value('fullname', item['insuredName'])
-                loader.add_value('birthdate', item['birthDate'])
-                loader.add_value('father_name', item['fatherName'])
-                loader.add_value('relationship', item['relationName'])
-                loader.add_value('national_code', item['nationalCode'])
-                loader.add_value('customer_group', item['personGroupName'])
-                loader.add_value('end_date', item['startDate'])
-                loader.add_value('start_date', item['endDate'])
-                loader.add_value('insurance_name', item['insurerCompany'])
-                loader.add_value('basic_insurance', item['firstInsurerCompany'])
-                yield loader.load_item()
+            yield from self.inquiry_requests_from_several_policy(response, data_list)
         else:
             return None
