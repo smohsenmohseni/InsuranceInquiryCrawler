@@ -10,6 +10,7 @@ class AtiehInsuranceItem(Item):
     end_date = Field()
     fullname = Field()
     birthdate = Field()
+    franchise = Field()
     start_date = Field()
     father_name = Field()
     relationship = Field()
@@ -17,3 +18,4 @@ class AtiehInsuranceItem(Item):
     customer_group = Field()
     insurance_name = Field()
     basic_insurance = Field()
+    remaining_ceiling = Field()
