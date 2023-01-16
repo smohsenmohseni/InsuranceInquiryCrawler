@@ -1,6 +1,6 @@
 # Core imports.
 from itemloaders import ItemLoader
-from itemloaders.processors import TakeFirst, Compose, Join
+from itemloaders.processors import Join, Compose, TakeFirst
 
 # Local imports.
 from app.items.atieh import AtiehInsuranceItem

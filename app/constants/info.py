@@ -48,6 +48,14 @@ MAD_INSURANCE_INFO = {
         "https://mccp.iraneit.com/odata/MCClaimProc/preAuthEnabledPolicy/getInsuredPersonPolicyInfo"
         "(corpId={insurance_id},nationalCodeOrId='{national_code}',type='nationalcode')?$top=1"
     ),
+    'person_info_url': (
+        "https://mccp.iraneit.com/odata/MCClaimProc/insuredPerson/getInsuredPerson"
+        "(corpId={insurance_id},cmnId={cmn_id})?$top=1"
+    ),
+    'franchise_url': 'https://mccp.iraneit.com/odata/MCClaimProc/franshizResponse/getFranshiz?$top=1',
+    'remaining_ceiling_url': (
+        'https://mccp.iraneit.com/odata/MCClaimProc/accessibleRemainAmount/getAccessibleRemainAmount?$top=1'
+    ),
     'login_data': {
         'scope': 'openid profile user_info',
         'grant_type': 'password',
