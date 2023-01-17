@@ -1,13 +1,15 @@
 # Standard imports
 import json
-from typing import Any, Generator
+from typing import Generator
 
 # Core imports.
-from scrapy.http import FormRequest, TextResponse, JsonRequest
+from scrapy.http import FormRequest, JsonRequest, TextResponse
 
+# Third-party imports.
 from jdatetime import datetime
 
 # Local imports.
+from core.typing import StrAndIntUnion
 from app.generics import GenericSpider
 from app.loaders.mad import MadInsuranceItemLoader
 
@@ -54,13 +56,13 @@ class BaseMadSpider(GenericSpider):
             self.person_info_url.format(insurance_id=self.insurance_id, cmn_id=data['InsuredPersonId']),
             cookies=self.authentication_cookie,
             callback=self.franchise_request,
-            cb_kwargs={'loader': loader}
+            cb_kwargs={'loader': loader},
         )
 
     def franchise_request(self, response: TextResponse, loader: MadInsuranceItemLoader) -> JsonRequest:
         resp: dict = json.loads(response.body)
-        loader.add_value('name', resp['Name'])
         loader.add_value('mobile', resp['Mobile'])
+        loader.add_value('first_name', resp['Name'])
         loader.add_value('birth_day', resp['BirthDay'])
         loader.add_value('last_name', resp['LastName'])
         loader.add_value('birth_year', resp['BirthYear'])
@@ -82,9 +84,9 @@ class BaseMadSpider(GenericSpider):
             },
         )
 
-    def remaining_ceiling_request(self, response: TextResponse, loader: MadInsuranceItemLoader):
-        # TODO: get franchise data and pass request
+    def remaining_ceiling_request(self, response: TextResponse, loader: MadInsuranceItemLoader) -> JsonRequest:
         resp: dict = json.loads(response.body)
+        loader.add_value('franchise', resp['Rate'])
         return JsonRequest(
             self.remaining_ceiling_url,
             cookies=self.authentication_cookie,
@@ -100,8 +102,10 @@ class BaseMadSpider(GenericSpider):
         )
 
     @staticmethod
-    def parse(response: TextResponse, **kwargs: None) -> dict:
+    def parse(response: TextResponse, **kwargs: None) -> dict[str, StrAndIntUnion]:
+        resp: dict = json.loads(response.body)
         loader: MadInsuranceItemLoader = kwargs.get('loader', MadInsuranceItemLoader())
+        loader.add_value('remaining_ceiling', resp['Amount'])
         return loader.load_item()
 
 

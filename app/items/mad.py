@@ -6,7 +6,6 @@ __all__ = ('MadInsuranceItem',)
 
 
 class MadInsuranceItem(Item):
-    name = Field()
     mobile = Field()
     support = Field()
     end_date = Field()
@@ -14,6 +13,7 @@ class MadInsuranceItem(Item):
     last_name = Field()
     franchise = Field()
     birth_day = Field()
+    first_name = Field()
     start_date = Field()
     birth_year = Field()
     postal_code = Field()
