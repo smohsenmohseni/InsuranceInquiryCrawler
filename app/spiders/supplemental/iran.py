@@ -1,11 +1,12 @@
 # Standard imports
-from typing import Generator
+from typing import Optional
 from http.cookies import SimpleCookie
 
 # Core imports.
 from scrapy.http import Request, FormRequest, TextResponse
 
 # Local imports.
+from core.typing import GeneratorWithoutSendReturn
 from app.generics import GenericSpider
 from app.loaders.iran import IranInsuranceItemLoader
 
@@ -14,7 +15,7 @@ class IranInsuranceSpider(GenericSpider):
     custom_settings: dict[str, bool] = {'REDIRECT_ENABLED': True}
     login_cookie: dict[str, str] = dict()
 
-    def start_requests(self) -> Generator[Request, None, None]:
+    def start_requests(self) -> GeneratorWithoutSendReturn[Request]:
         yield Request(self.login_url, callback=self.login_request)
 
     def login_request(self, response: TextResponse) -> FormRequest:
@@ -55,7 +56,7 @@ class IranInsuranceSpider(GenericSpider):
             callback=self.parse,
         )
 
-    def parse(self, response: TextResponse, **kwargs: None) -> dict[str, str] | None:
+    def parse(self, response: TextResponse, **kwargs: None) -> Optional[dict]:
         loader = IranInsuranceItemLoader(selector=response.selector)
         loader.add_css('first_name', 'td tr:nth-child(1) .DemisT3:nth-child(2) .base-value-info *::text')
         loader.add_css('last_name', 'td tr:nth-child(1) .DemisT3:nth-child(4) .base-value-info *::text')

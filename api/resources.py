@@ -14,6 +14,7 @@ from core.exceptions import NotFoundException, BadRequestException
 
 
 class BaseCrawlResource(DefaultCrawlResource):
+    spider_module_path: str
     allowedMethods: list[str] = ['GET']
     load_stats: bool = getattr(app_settings, 'LOAD_STATS', False)
 
@@ -54,8 +55,6 @@ class BaseCrawlResource(DefaultCrawlResource):
             raise BadRequestException(messages.NATIONAL_CODE_IS_REQUIRED)
         return national_code
 
-
-class BasicInsuranceCrawlResource(BaseCrawlResource):
     def run_crawl(
         self,
         spider_name,
@@ -72,34 +71,17 @@ class BasicInsuranceCrawlResource(BaseCrawlResource):
             scrapy_request_args,
             max_requests,
             start_requests=start_requests,
-            spider_module_path='app.spiders.basic',
+            spider_module_path=self.spider_module_path,
         )
         if crawl_args:
             kwargs.update(crawl_args)
         dfd = manager.crawl(*args, **kwargs)
         return dfd
+
+
+class BasicInsuranceCrawlResource(BaseCrawlResource):
+    spider_module_path = 'app.spiders.basic'
 
 
 class SupplementalInsuranceInsuranceCrawlResource(BaseCrawlResource):
-    def run_crawl(
-        self,
-        spider_name,
-        scrapy_request_args,
-        max_requests=None,
-        crawl_args=None,
-        start_requests=False,
-        *args,
-        **kwargs,
-    ):
-        crawl_manager_cls = load_object(app_settings.CRAWL_MANAGER)
-        manager = crawl_manager_cls(
-            spider_name,
-            scrapy_request_args,
-            max_requests,
-            start_requests=start_requests,
-            spider_module_path='app.spiders.supplemental',
-        )
-        if crawl_args:
-            kwargs.update(crawl_args)
-        dfd = manager.crawl(*args, **kwargs)
-        return dfd
+    spider_module_path = 'app.spiders.supplemental'

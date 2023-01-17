@@ -1,12 +1,13 @@
 # Standard imports
 import json
-from typing import Generator
+from typing import Optional
 from http.cookies import SimpleCookie
 
 # Core imports.
 from scrapy.http import Request, FormRequest, JsonRequest, TextResponse
 
 # Local imports.
+from core.typing import GeneratorWithoutSendReturn
 from app.generics import GenericSpider
 from app.loaders.atieh import AtiehInsuranceItemLoader
 from app.helpers.decorator import disable_cache
@@ -17,7 +18,7 @@ class AtiehInsuranceSpider(GenericSpider):
     inquiry_from_several_policy_url: str
     custom_settings = {'REDIRECT_ENABLED': True, 'HTTPCACHE_ENABLED': False}
 
-    def start_requests(self) -> Generator[Request, None, None]:
+    def start_requests(self) -> GeneratorWithoutSendReturn[Request]:
         yield Request(self.login_url, callback=self.login_request)
 
     def login_request(self, response: TextResponse) -> FormRequest:
@@ -28,7 +29,7 @@ class AtiehInsuranceSpider(GenericSpider):
         )
 
     @staticmethod
-    def retrieve_authentication_cookie(cookie: str) -> dict:
+    def retrieve_authentication_cookie(cookie: str) -> dict[str, str]:
         c: SimpleCookie = SimpleCookie()
         c.load(cookie)
         return {'JSESSIONID': c['JSESSIONID'].value}
@@ -47,7 +48,7 @@ class AtiehInsuranceSpider(GenericSpider):
             },
         )
 
-    def client_data_parser(self, response: TextResponse) -> Generator[dict | Generator, None, None] | None:
+    def client_data_parser(self, response: TextResponse) -> Optional[GeneratorWithoutSendReturn]:
         if response.url.endswith('outpatient'):
             loader = AtiehInsuranceItemLoader(selector=response.selector)
             yield self.cost_inquiry_request(response, loader=loader)
@@ -57,7 +58,7 @@ class AtiehInsuranceSpider(GenericSpider):
         else:
             return None
 
-    def inquiry_requests_from_several_policy(self, response: TextResponse, data_list: list) -> list:
+    def inquiry_requests_from_several_policy(self, response: TextResponse, data_list: list[dict]) -> list[FormRequest]:
         return [
             FormRequest(
                 method='POST',
@@ -74,7 +75,7 @@ class AtiehInsuranceSpider(GenericSpider):
             for policy in data_list
         ]
 
-    def cost_inquiry_request(self, response: TextResponse, **kwargs):
+    def cost_inquiry_request(self, response: TextResponse, **kwargs) -> JsonRequest:
         return JsonRequest(
             cb_kwargs=kwargs,
             callback=self.parse,
@@ -82,7 +83,7 @@ class AtiehInsuranceSpider(GenericSpider):
             cookies=self.retrieve_authentication_cookie(response.request.headers.get('Cookie').decode()),
         )
 
-    def parse(self, response: TextResponse, **kwargs) -> Generator[dict, None, None]:
+    def parse(self, response: TextResponse, **kwargs) -> GeneratorWithoutSendReturn[dict]:
         loader: AtiehInsuranceItemLoader = kwargs.get('loader', AtiehInsuranceItemLoader())
         loader.add_css('insurer', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(8) p *::text')
         loader.add_css('fullname', '#policyInfoPanelBox-collapse div.col-md-4:nth-child(1) p *::text')

@@ -1,8 +1,15 @@
 # Standard imports
-from typing import TypeVar
+from typing import Union, TypeVar, Generator
 
 
-__all__ = ('StrAndIntUnion',)
+YieldType = TypeVar('YieldType')
 
 
-StrAndIntUnion = TypeVar('StrAndIntUnion', str, int)
+__all__ = (
+    'StrIntUnion',
+    'GeneratorWithoutSendReturn',
+)
+
+
+StrIntUnion = Union[str, int]
+GeneratorWithoutSendReturn = Generator[YieldType, None, None]

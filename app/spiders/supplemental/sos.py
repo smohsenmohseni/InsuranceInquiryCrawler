@@ -1,6 +1,6 @@
 # Standard imports
 import json
-from typing import Generator
+from typing import Optional
 
 # Core imports.
 from scrapy.http import JsonRequest, TextResponse
@@ -9,12 +9,13 @@ from scrapy.http import JsonRequest, TextResponse
 from jdatetime import datetime
 
 # Local imports.
+from core.typing import GeneratorWithoutSendReturn
 from app.generics import GenericSpider
 from app.loaders.sos import SosInsuranceItemLoader
 
 
 class SosInsuranceSpider(GenericSpider):
-    def start_requests(self) -> Generator[JsonRequest, None, None]:
+    def start_requests(self) -> GeneratorWithoutSendReturn[JsonRequest]:
         data_: dict[str, str] = {
             'serviceDate': datetime.now().strftime('%Y/%m/%d'),
             'hospitalId': '153398',
@@ -22,7 +23,7 @@ class SosInsuranceSpider(GenericSpider):
         }
         yield JsonRequest(self.inquiry_url, data=data_, callback=self.parse)
 
-    def parse(self, response: TextResponse, **kwargs: None) -> dict[str, str] | None:
+    def parse(self, response: TextResponse, **kwargs: None) -> Optional[dict]:
         response_model: list[dict] = json.loads(response.body.decode()).get('model')
         if response_model:
             loader = SosInsuranceItemLoader()

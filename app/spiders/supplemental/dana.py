@@ -1,12 +1,13 @@
 # Standard imports
 import json
-from typing import Any, Generator
+from typing import Any, Optional
 from http.cookies import SimpleCookie
 
 # Core imports.
 from scrapy.http import Request, FormRequest, JsonRequest, TextResponse
 
 # Local imports.
+from core.typing import GeneratorWithoutSendReturn
 from app.generics import GenericSpider
 from app.loaders.dana import DanaInsuranceItemLoader
 
@@ -14,7 +15,7 @@ from app.loaders.dana import DanaInsuranceItemLoader
 class DanaInsuranceSpider(GenericSpider):
     handle_httpstatus_list = [302]
 
-    def start_requests(self) -> Generator[Request, None, None]:
+    def start_requests(self) -> GeneratorWithoutSendReturn[Request]:
         yield Request(self.login_url, callback=self.login_request)
 
     def login_request(self, response: TextResponse) -> FormRequest:
@@ -33,7 +34,7 @@ class DanaInsuranceSpider(GenericSpider):
             callback=self.parse,
         )
 
-    def parse(self, response: TextResponse, **kwargs: None) -> dict[str, str] | None:
+    def parse(self, response: TextResponse, **kwargs: None) -> Optional[dict]:
         response_data: dict[str, Any] = json.loads(response.body)
         if response_data['Success']:
             loader = DanaInsuranceItemLoader()

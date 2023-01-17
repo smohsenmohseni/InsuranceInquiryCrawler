@@ -7,6 +7,8 @@ from scrapyrt.conf.spider_settings import (
 
 
 class CrawlManager(DefaultCrawlManager):
+    spider_module_path: str
+
     def __init__(self, *args, **kwargs) -> None:
         self.spider_module_path = kwargs.pop('spider_module_path', '')
         super().__init__(*args, **kwargs)

@@ -1,6 +1,5 @@
 # Standard imports
 import json
-from typing import Generator
 
 # Core imports.
 from scrapy.http import FormRequest, JsonRequest, TextResponse
@@ -9,7 +8,7 @@ from scrapy.http import FormRequest, JsonRequest, TextResponse
 from jdatetime import datetime
 
 # Local imports.
-from core.typing import StrAndIntUnion
+from core.typing import StrIntUnion, GeneratorWithoutSendReturn
 from app.generics import GenericSpider
 from app.loaders.mad import MadInsuranceItemLoader
 
@@ -24,7 +23,7 @@ class BaseMadSpider(GenericSpider):
     def info_name(self) -> str:
         return 'MAD_INSURANCE_INFO'
 
-    def start_requests(self) -> Generator[FormRequest, None, None]:
+    def start_requests(self) -> GeneratorWithoutSendReturn[FormRequest]:
         yield FormRequest(
             self.login_url,
             formdata=self.login_data,
@@ -102,7 +101,7 @@ class BaseMadSpider(GenericSpider):
         )
 
     @staticmethod
-    def parse(response: TextResponse, **kwargs: None) -> dict[str, StrAndIntUnion]:
+    def parse(response: TextResponse, **kwargs: None) -> dict[str, StrIntUnion]:
         resp: dict = json.loads(response.body)
         loader: MadInsuranceItemLoader = kwargs.get('loader', MadInsuranceItemLoader())
         loader.add_value('remaining_ceiling', resp['Amount'])
