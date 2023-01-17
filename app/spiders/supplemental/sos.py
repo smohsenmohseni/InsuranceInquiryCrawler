@@ -16,7 +16,7 @@ from app.loaders.sos import SosInsuranceItemLoader
 
 class SosInsuranceSpider(GenericSpider):
     def start_requests(self) -> GeneratorWithoutSendReturn[JsonRequest]:
-        data_: dict[str, str] = {
+        data_ = {
             'serviceDate': datetime.now().strftime('%Y/%m/%d'),
             'hospitalId': '153398',
             'nationalcode': self.national_code,

@@ -15,7 +15,7 @@ from core.exceptions import NotFoundException, BadRequestException
 
 class BaseCrawlResource(DefaultCrawlResource):
     spider_module_path: str
-    allowedMethods: list[str] = ['GET']
+    allowedMethods = ['GET']
     load_stats: bool = getattr(app_settings, 'LOAD_STATS', False)
 
     def render_GET(self, request: TwistedRequest, **kwargs: None) -> defer:

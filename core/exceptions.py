@@ -7,12 +7,12 @@ __all__ = ('BadRequestException', 'NotFoundException')
 
 class BaseError(Error):
     def __init__(self, message: str) -> None:
-        self.message: bytes = bytes(message.encode())
+        self.message = bytes(message.encode())
 
 
 class BadRequestException(BaseError):
-    status: bytes = b'400'
+    status = b'400'
 
 
 class NotFoundException(BaseError):
-    status: bytes = b'404'
+    status = b'404'
