@@ -42,15 +42,7 @@ class BaseMadSpider(GenericSpider):
         resp: dict = json.loads(response.body)
         data: dict = resp['PreAuthEnabledPolicies'][0]
         loader = MadInsuranceItemLoader()
-        loader.add_value('policy_id', data['PolicyId'])
-        loader.add_value('support', resp['IsUnderCov'])
-        loader.add_value('end_date', data['CovEndDate'])
-        loader.add_value('start_date', data['CovBeginDate'])
-        loader.add_value('customer_name', data['CustomerName'])
-        loader.add_value('relationship', data['RelationTypeText'])
-        loader.add_value('insured_person_id', data['InsuredPersonId'])
-        loader.add_value('national_code', data['InsuredPersonNationalCode'])
-        loader.add_value('health_policy_insured_person_id', data['HealthPolicyInsuredPersonId'])
+        self.extract_data(response, loader, data)
         return JsonRequest(
             self.person_info_url.format(insurance_id=self.insurance_id, cmn_id=data['InsuredPersonId']),
             cookies=self.authentication_cookie,
@@ -59,16 +51,7 @@ class BaseMadSpider(GenericSpider):
         )
 
     def franchise_request(self, response: TextResponse, loader: MadInsuranceItemLoader) -> JsonRequest:
-        resp: dict = json.loads(response.body)
-        loader.add_value('mobile', resp['Mobile'])
-        loader.add_value('first_name', resp['Name'])
-        loader.add_value('birth_day', resp['BirthDay'])
-        loader.add_value('last_name', resp['LastName'])
-        loader.add_value('birth_year', resp['BirthYear'])
-        loader.add_value('father_name', resp['FatherName'])
-        loader.add_value('birth_month', resp['BirthMonth'])
-        loader.add_value('gender_text', resp['GenderText'])
-        loader.add_value('postal_code', resp['PostalCode'])
+        self.extract_data(response, loader)
         return JsonRequest(
             self.franchise_url,
             cookies=self.authentication_cookie,
@@ -84,8 +67,7 @@ class BaseMadSpider(GenericSpider):
         )
 
     def remaining_ceiling_request(self, response: TextResponse, loader: MadInsuranceItemLoader) -> JsonRequest:
-        resp: dict = json.loads(response.body)
-        loader.add_value('franchise', resp['Rate'])
+        self.extract_data(response, loader)
         return JsonRequest(
             self.remaining_ceiling_url,
             cookies=self.authentication_cookie,
@@ -100,12 +82,36 @@ class BaseMadSpider(GenericSpider):
             },
         )
 
-    @staticmethod
-    def parse(response: TextResponse, **kwargs: None) -> dict[str, StrIntUnion]:
-        resp: dict = json.loads(response.body)
+    def parse(self, response: TextResponse, **kwargs: None) -> dict[str, StrIntUnion]:
         loader: MadInsuranceItemLoader = kwargs.get('loader', MadInsuranceItemLoader())
-        loader.add_value('remaining_ceiling', resp['Amount'])
+        self.extract_data(response, loader)
         return loader.load_item()
+
+    @staticmethod
+    def extract_data(response: TextResponse, loader: MadInsuranceItemLoader, data=None) -> None:
+        if data is None:
+            data = {}
+        resp: dict = json.loads(response.body)
+        loader.add_value('mobile', resp.get('Mobile'))
+        loader.add_value('franchise', resp.get('Rate'))
+        loader.add_value('first_name', resp.get('Name'))
+        loader.add_value('birth_day', resp.get('BirthDay'))
+        loader.add_value('last_name', resp.get('LastName'))
+        loader.add_value('policy_id', data.get('PolicyId'))
+        loader.add_value('support', resp.get('IsUnderCov'))
+        loader.add_value('end_date', data.get('CovEndDate'))
+        loader.add_value('birth_year', resp.get('BirthYear'))
+        loader.add_value('postal_code', resp.get('PostalCode'))
+        loader.add_value('gender_text', resp.get('GenderText'))
+        loader.add_value('father_name', resp.get('FatherName'))
+        loader.add_value('birth_month', resp.get('BirthMonth'))
+        loader.add_value('start_date', data.get('CovBeginDate'))
+        loader.add_value('remaining_ceiling', resp.get('Amount'))
+        loader.add_value('customer_name', data.get('CustomerName'))
+        loader.add_value('relationship', data.get('RelationTypeText'))
+        loader.add_value('insured_person_id', data.get('InsuredPersonId'))
+        loader.add_value('national_code', data.get('InsuredPersonNationalCode'))
+        loader.add_value('health_policy_insured_person_id', data.get('HealthPolicyInsuredPersonId'))
 
 
 class MadAsiaInsuranceSpider(BaseMadSpider):

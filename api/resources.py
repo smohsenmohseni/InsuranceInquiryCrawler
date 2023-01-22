@@ -28,7 +28,7 @@ class BaseCrawlResource(DefaultCrawlResource):
             "status": "ok",
             "spider_name": result.get("spider_name"),
             "items": self.validate_items(result.get("items", [])),
-            "stats": result.get("stats") if self.load_stats else dict(),
+            "stats": result.get("stats") if self.load_stats else {},
         }
 
     def get_api_params(self, request: TwistedRequest) -> dict:

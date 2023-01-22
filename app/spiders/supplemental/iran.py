@@ -13,7 +13,7 @@ from app.loaders.iran import IranInsuranceItemLoader
 
 class IranInsuranceSpider(GenericSpider):
     custom_settings = {'REDIRECT_ENABLED': True}
-    login_cookie: dict[str, str] = dict()
+    login_cookie: dict[str, str] = {}
 
     def start_requests(self) -> GeneratorWithoutSendReturn[Request]:
         yield Request(self.login_url, callback=self.login_request)
