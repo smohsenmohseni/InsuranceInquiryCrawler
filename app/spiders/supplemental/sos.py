@@ -38,8 +38,8 @@ class SosInsuranceSpider(GenericSpider):
                 self.franchise_url,
                 data={
                     "contractName": extracted_data.get('contract_name'),
-                    "contractId": extracted_data.get('contract_id'),
                     "serviceDate": datetime.now().strftime('%Y/%m/%d'),
+                    "contractId": extracted_data.get('contract_id'),
                     "planId": extracted_data.get('plan_id'),
                     "nationalcode": self.national_code,
                     "hospitalId": "153398",
@@ -59,8 +59,8 @@ class SosInsuranceSpider(GenericSpider):
                 self.remaining_ceiling_url,
                 data={
                     "contractName": extracted_data.get('contract_name'),
-                    "contractId": extracted_data.get('contract_id'),
                     "serviceDate": datetime.now().strftime('%Y/%m/%d'),
+                    "contractId": extracted_data.get('contract_id'),
                     "planId": extracted_data.get('plan_id'),
                     "nationalcode": self.national_code,
                     "serviceId": item['diseaseId'],
