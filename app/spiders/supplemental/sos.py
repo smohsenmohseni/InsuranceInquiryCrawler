@@ -51,26 +51,30 @@ class SosInsuranceSpider(GenericSpider):
 
     def remaining_ceiling_request(
         self, response: TextResponse, extracted_data: dict
-    ) -> GeneratorWithoutSendReturn[JsonRequest]:
-        response_model: list[dict] = json.loads(response.body.decode()).get('model')
-        for item in response_model:
-            _extracted_data = self.extract_data(item)
-            yield JsonRequest(
-                self.remaining_ceiling_url,
-                data={
-                    "contractName": extracted_data.get('contract_name'),
-                    "serviceDate": datetime.now().strftime('%Y/%m/%d'),
-                    "contractId": extracted_data.get('contract_id'),
-                    "planId": extracted_data.get('plan_id'),
-                    "nationalcode": self.national_code,
-                    "serviceId": item['diseaseId'],
-                    "hospitalId": "153398",
-                    "username": "153398",
-                    "userId": 38193,
-                },
-                cb_kwargs={'extracted_data': {**extracted_data, **_extracted_data}},
-                callback=self.parse,
-            )
+    ) -> Optional[GeneratorWithoutSendReturn]:
+        response = json.loads(response.body.decode())
+        if response['isSuccess']:
+            response_model: list[dict] = response.get('model')
+            for item in response_model:
+                if item['diseaseId'] != 4479:
+                    continue
+                _extracted_data = self.extract_data(item)
+                yield JsonRequest(
+                    self.remaining_ceiling_url,
+                    data={
+                        "contractName": extracted_data.get('contract_name'),
+                        "serviceDate": datetime.now().strftime('%Y/%m/%d'),
+                        "contractId": extracted_data.get('contract_id'),
+                        "planId": extracted_data.get('plan_id'),
+                        "nationalcode": self.national_code,
+                        "hospitalId": "153398",
+                        "username": "153398",
+                        "serviceId": 4479,
+                        "userId": 38193,
+                    },
+                    cb_kwargs={'extracted_data': {**extracted_data, **_extracted_data}},
+                    callback=self.parse,
+                )
 
     def parse(self, response: TextResponse, **kwargs: dict) -> Optional[dict]:
         extracted_data: dict = kwargs['extracted_data']
