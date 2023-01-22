@@ -33,54 +33,54 @@ class SosInsuranceSpider(GenericSpider):
     def franchise_request(self, response: TextResponse) -> GeneratorWithoutSendReturn[JsonRequest]:
         response_model: list[dict] = json.loads(response.body.decode()).get('model')
         for item in response_model:
-            loader = SosInsuranceItemLoader()
-            self.extract_data(item, loader)
+            extracted_data = self.extract_data(item)
             yield JsonRequest(
                 self.franchise_url,
                 data={
+                    "contractName": extracted_data.get('contract_name'),
+                    "contractId": extracted_data.get('contract_id'),
                     "serviceDate": datetime.now().strftime('%Y/%m/%d'),
-                    "contractName": loader.get_output_value('contract_name'),
-                    "contractId": loader.get_output_value('contract_id'),
-                    "planId": loader.get_output_value('plan_id'),
+                    "planId": extracted_data.get('plan_id'),
                     "nationalcode": self.national_code,
                     "hospitalId": "153398",
                     "username": "153398",
                 },
+                cb_kwargs={'extracted_data': extracted_data},
                 callback=self.remaining_ceiling_request,
-                cb_kwargs={'loader': loader},
             )
 
     def remaining_ceiling_request(
-        self, response: TextResponse, loader: SosInsuranceItemLoader
+        self, response: TextResponse, extracted_data: dict
     ) -> GeneratorWithoutSendReturn[JsonRequest]:
         response_model: list[dict] = json.loads(response.body.decode()).get('model')
         for item in response_model:
-            self.extract_data(item, loader)
+            _extracted_data = self.extract_data(item)
             yield JsonRequest(
                 self.remaining_ceiling_url,
                 data={
+                    "contractName": extracted_data.get('contract_name'),
+                    "contractId": extracted_data.get('contract_id'),
                     "serviceDate": datetime.now().strftime('%Y/%m/%d'),
-                    "contractName": loader.get_output_value('contract_name'),
-                    "contractId": loader.get_output_value('contract_id'),
-                    "planId": loader.get_output_value('plan_id'),
+                    "planId": extracted_data.get('plan_id'),
                     "nationalcode": self.national_code,
                     "serviceId": item['diseaseId'],
                     "hospitalId": "153398",
                     "username": "153398",
                     "userId": 38193,
                 },
-                cb_kwargs={'loader': loader},
+                cb_kwargs={'extracted_data': {**extracted_data, **_extracted_data}},
                 callback=self.parse,
             )
 
-    def parse(self, response: TextResponse, **kwargs: SosInsuranceItemLoader) -> Optional[dict]:
-        loader: SosInsuranceItemLoader = kwargs['loader']
+    def parse(self, response: TextResponse, **kwargs: dict) -> Optional[dict]:
+        extracted_data: dict = kwargs['extracted_data']
         item: dict = json.loads(response.body.decode()).get('model')
-        self.extract_data(item, loader)
-        return loader.load_item()
+        _extracted_data = self.extract_data(item)
+        return {**extracted_data, **_extracted_data}
 
     @staticmethod
-    def extract_data(item: dict, loader: SosInsuranceItemLoader) -> None:
+    def extract_data(item: dict) -> dict:
+        loader = SosInsuranceItemLoader()
         loader.add_value('plan_id', item.get('planId'))
         loader.add_value('end_date', item.get('endDate'))
         loader.add_value('last_name', item.get('lastName'))
@@ -92,3 +92,4 @@ class SosInsuranceSpider(GenericSpider):
         loader.add_value('contract_name', item.get('contractName'))
         loader.add_value('insurance_name', item.get('insuranceName'))
         loader.add_value('remaining_ceiling', item.get('max_coverage'))
+        return dict(loader.load_item())
