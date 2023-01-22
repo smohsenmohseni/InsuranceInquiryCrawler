@@ -69,6 +69,8 @@ MAD_INSURANCE_INFO = {
 SOS_INSURANCE_INFO = {
     'login_url': 'https://carewrapper.iranassistance.com/Auth/Authentication/LoginUser',
     'inquiry_url': 'https://carewrapper.iranassistance.com/api/CareCenter/GetContractList',
+    'franchise_url': 'https://carewrapper.iranassistance.com/api/CareCenter/GetServiceList',
+    'remaining_ceiling_url': 'https://carewrapper.iranassistance.com/api/CareCenter/GetMaxCoverage',
 }
 
 TAMIN_INSURANCE_INFO = {
