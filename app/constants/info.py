@@ -24,12 +24,8 @@ DANA_INSURANCE_INFO = {
         'https://totalapp2.dana-insurance.ir/Sepad1/Fanavaran/'
         'GetDataBimenameBimeShodeFanByCodeMeliTarikh?tarikhHazine=1401/10/13&CodeMelli={national_code}'
     ),
-    'franchise_url': (
-        'https://totalapp2.dana-insurance.ir/Sepad1/Moarefiname/getInfoTahodBimeshode'
-        '?CodeRayaneBimename=21993825&CodeRayaneBimeShodeCmn=20256560'
-        '&CodeRayaneGorupBimariBimeGar=4531&NoeMoareinameID=4&CodeRayaneMarkazDarmaniVar=425'
-        '&TarikhBastari=1401%2F11%2F03&tarikhShoroeBimename=1401%2F02%2F01&tarhId=50639&_=1674461404917'
-    ),
+    'franchise_url': 'https://totalapp2.dana-insurance.ir/Sepad1/Moarefiname/getInfoTahodBimeshode',
+    'remaining_ceiling_url': 'https://totalapp2.dana-insurance.ir/Sepad1/Moarefiname/getMandeSaghf',
     'login_data': {
         'NameKarbari': str(os.getenv('DANA_USERNAME', '')),
         'RamzeObor': str(os.getenv('DANA_PASSWORD', '')),
