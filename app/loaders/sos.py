@@ -1,6 +1,6 @@
 # Core imports.
 from itemloaders import ItemLoader
-from itemloaders.processors import Join, MapCompose, Compose
+from itemloaders.processors import Join, Compose, MapCompose
 
 # Local imports.
 from app.items.sos import SosInsuranceItem
