@@ -12,8 +12,9 @@ from app.loaders.iran import IranInsuranceItemLoader
 
 
 class IranInsuranceSpider(GenericSpider):
-    custom_settings = {'REDIRECT_ENABLED': True}
+    franchise_url: str
     login_cookie: dict[str, str] = {}
+    custom_settings = {'REDIRECT_ENABLED': True}
 
     def start_requests(self) -> GeneratorWithoutSendReturn[Request]:
         yield Request(self.login_url, callback=self.login_request)
@@ -53,6 +54,21 @@ class IranInsuranceSpider(GenericSpider):
             },
             clickdata={'id': 'inquiryOutpatientBtn'},
             dont_filter=True,
+            callback=self.franchise_request,
+        )
+
+    def franchise_request(self, response: TextResponse):
+        return FormRequest(
+            self.franchise_url,
+            cookies=self.login_cookie,
+            method='POST',
+            formdata={
+                'serviceId': '42',
+                'showEPrescriptionButton': '',
+                'showSaveBtn': 'true',
+                '_eventId': '',
+            },
+            dont_filter=True,
             callback=self.parse,
         )
 
@@ -66,4 +82,6 @@ class IranInsuranceSpider(GenericSpider):
         loader.add_css('birthdate', 'tr:nth-child(3) .DemisT3:nth-child(4) .base-value-info *::text')
         loader.add_css('start_date', 'tr:nth-child(4) .DemisT3:nth-child(4) .base-value-info *::text')
         loader.add_css('expire_date', 'tr:nth-child(4) .DemisT3:nth-child(6) .base-value-info *::text')
+        loader.add_css('franchise', '.DemisT2 .base-value-info *::text')
+        loader.add_css('remaining_ceiling', '#ceilingRemainedAmount *::text')
         return result if (result := loader.load_item()) and all(result.__dict__.values()) else None

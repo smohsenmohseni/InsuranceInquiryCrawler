@@ -36,6 +36,10 @@ IRAN_INSURANCE_INFO = {
         'login?service=http%3A%2F%2Fdarman.iraninsurance.ir%2F%2Fj_spring_cas_security_check'
     ),
     'inquiry_url': 'http://darman.iraninsurance.ir/home-flow?execution=e1s1',
+    'franchise_url': (
+        'http://darman.iraninsurance.ir/home-flow'
+        '?execution=e1s2&_eventId=changeService&serviceId=42&ajaxSource=true&fragments=content'
+    ),
     'login_data': {
         'username': str(os.getenv('IRAN_USERNAME', '')),
         'password': str(os.getenv('IRAN_PASSWORD', '')),
