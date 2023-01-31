@@ -79,13 +79,14 @@ class IranInsuranceSpider(GenericSpider):
 
     @staticmethod
     def extract_data(loader: IranInsuranceItemLoader) -> None:
-        loader.add_css('franchise', '.DemisT2 .base-value-info *::text')
-        loader.add_css('remaining_ceiling', '#ceilingRemainedAmount *::text')
-        loader.add_css('gender', 'tr:nth-child(2) .DemisT3:nth-child(2) .base-value-info *::text')
-        loader.add_css('credit', 'tr:nth-child(3) .DemisT3:nth-child(2) .base-value-info *::text')
-        loader.add_css('birthdate', 'tr:nth-child(3) .DemisT3:nth-child(4) .base-value-info *::text')
-        loader.add_css('start_date', 'tr:nth-child(4) .DemisT3:nth-child(4) .base-value-info *::text')
-        loader.add_css('expire_date', 'tr:nth-child(4) .DemisT3:nth-child(6) .base-value-info *::text')
-        loader.add_css('last_name', 'td tr:nth-child(1) .DemisT3:nth-child(4) .base-value-info *::text')
-        loader.add_css('first_name', 'td tr:nth-child(1) .DemisT3:nth-child(2) .base-value-info *::text')
-        loader.add_css('father_name', 'td tr:nth-child(1) .DemisT3:nth-child(6) .base-value-info *::text')
+        add_css = loader.add_css
+        add_css('franchise', '.DemisT2 .base-value-info *::text')
+        add_css('remaining_ceiling', '#ceilingRemainedAmount *::text')
+        add_css('gender', 'tr:nth-child(2) .DemisT3:nth-child(2) .base-value-info *::text')
+        add_css('credit', 'tr:nth-child(3) .DemisT3:nth-child(2) .base-value-info *::text')
+        add_css('birthdate', 'tr:nth-child(3) .DemisT3:nth-child(4) .base-value-info *::text')
+        add_css('start_date', 'tr:nth-child(4) .DemisT3:nth-child(4) .base-value-info *::text')
+        add_css('expire_date', 'tr:nth-child(4) .DemisT3:nth-child(6) .base-value-info *::text')
+        add_css('last_name', 'td tr:nth-child(1) .DemisT3:nth-child(4) .base-value-info *::text')
+        add_css('first_name', 'td tr:nth-child(1) .DemisT3:nth-child(2) .base-value-info *::text')
+        add_css('father_name', 'td tr:nth-child(1) .DemisT3:nth-child(6) .base-value-info *::text')
