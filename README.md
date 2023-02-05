@@ -21,6 +21,8 @@ install dependencies:
 setup commands:
 
 ```bash
+chmod +x ./scripts/setup
+
 ./scripts/setup
 ```
 
